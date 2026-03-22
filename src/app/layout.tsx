@@ -36,8 +36,8 @@ export default function RootLayout({
         <ThemeProvider>
           <Toaster position="top-center" />
           <TooltipProvider>
-            <div className="container mx-auto flex min-h-screen max-w-4xl flex-col p-3">
-              {children}
+            <div className="container mx-auto flex min-h-screen max-w-4xl flex-col px-2">
+              <div className="border-x">{children}</div>
             </div>
           </TooltipProvider>
         </ThemeProvider>

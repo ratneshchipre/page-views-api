@@ -18,7 +18,7 @@ const getStargazerCount = unstable_cache(
       );
 
       if (!response.ok) {
-        return 100;
+        return 0;
       }
 
       const json = (await response.json()) as { stargazers_count?: number };

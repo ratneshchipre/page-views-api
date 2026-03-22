@@ -5,7 +5,7 @@ import Logo from "@/components/logo";
 
 export default function Home() {
   return (
-    <div className="relative flex flex-col items-center overflow-hidden">
+    <div className="relative flex min-h-screen flex-col items-center overflow-hidden">
       <div className="mt-12 mb-6">
         <Logo />
       </div>
@@ -28,7 +28,7 @@ export default function Home() {
           Get Started
         </Link>
       </div>
-      <div className="mb-12 border-y"></div>
+      <div className="mb-12 w-full border-y"></div>
     </div>
   );
 }

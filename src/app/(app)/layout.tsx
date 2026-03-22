@@ -8,7 +8,7 @@ export default async function AppLayout({
   return (
     <>
       <SiteHeader />
-      <main className="flex-1 overflow-hidden border">{children}</main>
+      <main className="flex-1 overflow-hidden">{children}</main>
       {/* <SiteFooter /> */}
     </>
   );
