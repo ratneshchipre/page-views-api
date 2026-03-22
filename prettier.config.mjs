@@ -1,7 +1,7 @@
 /** @type {import("prettier").Config} */
 export default {
   plugins: ["prettier-plugin-tailwindcss"],
-  tailwindStylesheet: "./styles/globals.css",
+  tailwindStylesheet: "./src/styles/globals.css",
   semi: true,
   singleQuote: false,
   tabWidth: 2,
