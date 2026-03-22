@@ -1,3 +1,5 @@
+import SiteHeader from "@/components/site-header";
+
 export default async function AppLayout({
   children,
 }: Readonly<{
@@ -5,8 +7,8 @@ export default async function AppLayout({
 }>) {
   return (
     <>
-      {/* <SiteHeader /> */}
-      <main className="overflow-hidden px-5">{children}</main>
+      <SiteHeader />
+      <main className="flex-1 overflow-hidden border">{children}</main>
       {/* <SiteFooter /> */}
     </>
   );

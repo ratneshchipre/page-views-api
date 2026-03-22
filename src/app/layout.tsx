@@ -32,11 +32,13 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      <body>
         <ThemeProvider>
           <Toaster position="top-center" />
           <TooltipProvider>
-            <div>{children}</div>
+            <div className="container mx-auto flex min-h-screen max-w-4xl flex-col p-3">
+              {children}
+            </div>
           </TooltipProvider>
         </ThemeProvider>
       </body>
