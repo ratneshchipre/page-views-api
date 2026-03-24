@@ -1,0 +1,28 @@
+---
+title: Getting started
+description: Get started with Page Views API.
+createdAt:
+updatedAt:
+---
+
+## Installation
+
+```bash
+npm install page-views-api
+```
+
+## Usage
+
+```typescript
+import { PageViews } from "page-views-api";
+
+const pageViews = new PageViews({
+  apiKey: "YOUR_API_KEY",
+});
+
+const views = await pageViews.getViews({
+  path: "/",
+});
+
+console.log(views);
+```
