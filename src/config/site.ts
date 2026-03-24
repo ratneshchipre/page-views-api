@@ -3,7 +3,7 @@ import { NavItem } from "@/types/nav";
 export const NAV_ITEMS: NavItem[] = [
   {
     title: "Docs",
-    href: "/docs",
+    href: "/docs/getting-started",
   },
 ];
 

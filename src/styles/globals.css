@@ -2,6 +2,8 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@plugin "@tailwindcss/typography";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -46,6 +48,11 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --color-code: var(--code);
+  --color-code-foreground: var(--code-foreground);
+  --color-code-number: var(--code-number);
+  --color-code-highlight: var(--code-highlight);
 }
 
 :root {
@@ -81,6 +88,11 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+
+  --code: oklch(0.98 0 0);
+  --code-foreground: oklch(0.173 0 0);
+  --code-number: oklch(0.556 0 0);
+  --code-highlight: oklch(0.205 0 0 / 5%);
 }
 
 .dark {
@@ -115,6 +127,11 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
+
+  --code: oklch(0.12 0 0);
+  --code-foreground: oklch(0.985 0 0);
+  --code-number: oklch(0.5 0 0);
+  --code-highlight: oklch(1 0 0 / 10%);
 }
 
 @layer base {
@@ -126,5 +143,145 @@
   }
   html {
     @apply font-sans;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 5px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+}
+
+@layer components {
+  /* Code Blocks */
+  [data-rehype-pretty-code-figure] {
+    @apply relative my-[1.25em] overflow-hidden rounded-xl border bg-code text-code-foreground;
+
+    pre {
+      @apply overflow-x-auto overscroll-x-contain py-4 outline-hidden;
+      scrollbar-width: none;
+
+      &:not([data-line-numbers]) {
+        @apply px-4;
+      }
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    code {
+      @apply grid min-w-full font-mono text-[13.5px] leading-relaxed;
+      font-family: var(--font-geist-mono);
+    }
+
+    [data-line] {
+      @apply flex min-h-6 items-center border-l-4 border-l-transparent px-4 py-0.5;
+    }
+
+    [data-line] span {
+      @apply text-(--shiki-light) dark:text-(--shiki-dark);
+    }
+
+    [data-highlighted-line] {
+      @apply border-l-blue-500/70 bg-code-highlight;
+    }
+
+    [data-highlighted-chars] {
+      @apply rounded-sm bg-blue-500/20 px-1 py-0.5;
+    }
+  }
+
+  [data-rehype-pretty-code-title] {
+    @apply flex items-center gap-3 border-b border-border/50 bg-muted/5 px-4 py-2.5 text-xs font-medium text-muted-foreground;
+
+    & svg {
+      @apply size-4 shrink-0 opacity-70;
+    }
+  }
+
+  /* Line Numbers Gutter */
+  [data-line-numbers] {
+    counter-reset: line;
+  }
+
+  [data-line-numbers] [data-line] {
+    @apply border-l-0! px-0!;
+  }
+
+  [data-line-numbers] [data-line]::before {
+    counter-increment: line;
+    content: counter(line);
+    @apply sticky left-0 z-10 inline-block w-12 bg-code pr-4 pl-2 text-right text-sm text-code-number select-none;
+    margin-right: 0.5rem;
+  }
+
+  [data-line-numbers] [data-highlighted-line] {
+    @apply bg-code-highlight;
+  }
+
+  [data-line-numbers] [data-highlighted-line]::before {
+    @apply bg-code-highlight text-foreground/70;
+    box-shadow: inset 4px 0 0 0 oklch(0.623 0.214 259.815); /* Blue strip inside the sticky gutter */
+  }
+
+  /* Advanced Fade Overlay */
+  [data-fade-overlay] {
+    @apply pointer-events-none absolute top-0 right-0 z-1 rounded-tr-xl;
+
+    --fade-linear-gradient: linear-gradient(
+      to right,
+      transparent 0,
+      color-mix(in oklab, var(--fade-color, var(--background)) 20%, transparent)
+        10px,
+      color-mix(in oklab, var(--fade-color, var(--background)) 50%, transparent)
+        25px,
+      color-mix(in oklab, var(--fade-color, var(--background)) 80%, transparent)
+        35px,
+      var(--fade-color, var(--background)) 45px
+    );
+
+    width: var(--fade-width, 6rem);
+    height: 2.5rem;
+    background: var(--fade-background, var(--fade-linear-gradient));
+  }
+}
+
+@utility code-inline {
+  @apply rounded-md border bg-muted/50 px-1.5 py-0.5 font-mono text-[0.8125rem] whitespace-pre-wrap;
+}
+
+@utility prose-ncdai {
+  @apply prose-headings:tracking-tight prose-headings:text-balance prose-h2:font-semibold;
+  @apply prose-a:font-medium prose-a:text-foreground prose-a:underline prose-a:underline-offset-4;
+  @apply prose-code:rounded-md prose-code:border prose-code:bg-muted/50 prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:text-sm prose-code:font-normal prose-code:before:content-none prose-code:after:content-none;
+}
+
+@utility prose-no-margin {
+  & > :first-child {
+    @apply mt-0;
+  }
+
+  & > :last-child {
+    @apply mb-0;
+  }
+
+  :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)),
+  :where([data-rehype-pretty-code-figure]) {
+    @apply mt-3 mb-3;
+  }
+}
+
+@custom-variant supports-timeline-scroll {
+  @supports (animation-timeline: scroll()) {
+    @slot;
   }
 }
