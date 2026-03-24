@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getAllPosts } from "@/data/docs";
 import { MDX } from "@/components/mdx";
 import { Prose } from "@/components/ui/typography";
+import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -53,9 +54,22 @@ export default async function DocsPage({
   }
 
   return (
-    <div>
+    <div className="flex flex-col pt-8">
       <Prose className="font-geist-sans">
-        <div>
+        <div className="flex items-start justify-between gap-5 max-sm:flex-col max-sm:gap-1">
+          <div>
+            <h1 className="-mb-2 text-3xl font-semibold tracking-tight">
+              {post.metadata.title.includes("|")
+                ? post.metadata.title.split("|")[0].trim()
+                : post.metadata.title}
+            </h1>
+            <p className="text-muted-foreground">{post.metadata.description}</p>
+          </div>
+          <LLMCopyButtonWithViewOptions
+            markdownUrl={`/docs/${post.slug}.mdx`}
+          />
+        </div>
+        <div className="-mt-5">
           <MDX code={post.content} />
         </div>
       </Prose>
