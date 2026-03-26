@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { SOURCE_CODE_GITHUB_URL } from "@/config/site";
 import Logo from "./logo";
+import { SectionCorners } from "@/app/(app)/(root)/page";
 
 export default function SiteFooter() {
   return (
-    <footer className="relative pb-2 after:absolute after:-inset-x-px after:bottom-0 after:h-2 after:bg-background">
+    <footer className="relative pb-2.5 after:absolute after:-inset-x-px after:bottom-0 after:h-2 after:bg-background">
       <div className="relative flex flex-col items-center justify-between gap-5 border-y p-6 font-geist-sans md:flex-row">
+        <SectionCorners />
         <Link href="/" className="flex items-center gap-2.5">
           <Logo className="h-7.5 w-7.5 rounded-md" svgClassName="h-4 w-4" />
           <p className="text-[1.1rem] font-semibold tracking-tight max-sm:hidden">

@@ -22,7 +22,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
   }, []);
 
   if (!mounted) {
-    return <Skeleton className={cn("size-8 rounded-md", className)} />;
+    return <Skeleton className={cn("size-9 rounded-md", className)} />;
   }
 
   const handleToggle = () => {
@@ -36,7 +36,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
       <TooltipTrigger
         className={cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
-          "size-8 cursor-pointer rounded-md hover:bg-accent",
+          "size-9 cursor-pointer rounded-md hover:bg-accent",
           className
         )}
         onClick={handleToggle}
