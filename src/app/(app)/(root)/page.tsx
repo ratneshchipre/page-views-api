@@ -17,7 +17,7 @@ export default function Home() {
           A simple API to count visitors on any page. No setup, no dashboard.
         </p>
       </div>
-      <div className="mx-auto mb-12 px-4">
+      <div className="mx-auto mb-6 px-4">
         <Link
           href="/docs/getting-started"
           className={cn(
@@ -28,7 +28,21 @@ export default function Home() {
           Get Started
         </Link>
       </div>
-      <div className="mb-12 w-full border-y"></div>
+      <div className="mb-12 flex justify-center">
+        <div className="flex h-8 items-center rounded-full bg-zinc-50 px-4 font-geist-sans text-sm font-medium dark:bg-white/5">
+          <span className="text-muted-foreground">Backed by</span>
+          <span className="ml-1">no one</span>
+        </div>
+      </div>
+      <div className="mb-12 w-full border-y px-5 py-12 text-center font-geist-sans">
+        <h2 className="mb-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+          Supported by the Best
+        </h2>
+        <p className="text-sm text-balance text-muted-foreground sm:text-base">
+          Your sponsorship means a lot to open-source projects, including Page
+          Views API.
+        </p>
+      </div>
     </div>
   );
 }
