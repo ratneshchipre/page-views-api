@@ -10,7 +10,7 @@ export default function NotFound({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex h-[calc(100svh-2rem)] flex-col items-center justify-center gap-4",
+        "flex min-h-screen flex-col items-center justify-center gap-4",
         className
       )}
     >
