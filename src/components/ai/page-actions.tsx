@@ -68,7 +68,7 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
 
   return (
     <button
-      className="flex h-8 items-center gap-2 rounded-l-full pr-2 pl-2.5 font-geist-sans text-sm font-medium disabled:pointer-events-none disabled:opacity-50"
+      className="flex h-8 cursor-pointer items-center gap-2 rounded-l-full pr-2 pl-2.5 font-geist-sans text-sm font-medium disabled:pointer-events-none disabled:opacity-50"
       aria-busy={isCopying}
       disabled={isCopying}
       onClick={handleCopy}
@@ -155,7 +155,7 @@ export function ViewOptions({ markdownUrl }: { markdownUrl: string }) {
           buttonVariants({
             variant: "secondary",
             className:
-              "flex size-8 items-center justify-center gap-2 rounded-r-full text-sm",
+              "flex size-8 cursor-pointer items-center justify-center gap-2 rounded-r-full text-sm",
           })
         )}
       >
