@@ -63,7 +63,19 @@ export default async function DocsPage({
                 ? post.metadata.title.split("|")[0].trim()
                 : post.metadata.title}
             </h1>
-            <p className="text-muted-foreground">{post.metadata.description}</p>
+            <p className="text-muted-foreground max-sm:text-sm">
+              Updated on:{" "}
+              {post.metadata.updatedAt
+                ? new Date(post.metadata.updatedAt).toLocaleDateString(
+                    "en-US",
+                    {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    }
+                  )
+                : ""}
+            </p>
           </div>
           <LLMCopyButtonWithViewOptions
             markdownUrl={`/docs/${post.slug}.mdx`}

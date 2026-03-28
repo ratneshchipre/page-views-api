@@ -23,7 +23,8 @@ export default function Home() {
             Track page views in seconds
           </h1>
           <p className="text-md text-balance sm:text-lg">
-            A simple API to count visitors on any page. No setup, no dashboard.
+            An open-source API to count visitors on any page. Simple, no setup,
+            no dashboard.
           </p>
         </div>
         <div className="mx-auto mb-6 px-4">
@@ -70,7 +71,9 @@ export default function Home() {
             Every contribution helps improve and maintain this API.
           </p>
           <Link
-            href=""
+            href="https://github.com/sponsors/ratneshchipre"
+            target="_blank"
+            rel="noopener noreferrer"
             className={cn(
               buttonVariants({ variant: "outline", size: "lg" }),
               "cursor-pointer px-4 font-geist-sans transition-colors active:scale-98"
@@ -94,7 +97,7 @@ const features = [
     icon: ZapIcon,
     title: "Quick Integration",
     description:
-      "Add one request and start tracking instantly. No setup required.",
+      "Start tracking views instantly with a single request. No setup required.",
   },
   {
     icon: Rocket01Icon,
@@ -132,13 +135,18 @@ function FeatureCard({ icon, title, description }: FeatureCardProps) {
 
 function SponsorCard() {
   return (
-    <div className="group flex flex-col items-center gap-2 border-y border-dashed p-6 last:border-r-0 md:border-r">
+    <Link
+      href="https://github.com/sponsors/ratneshchipre"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex flex-col items-center gap-2 border-y border-dashed p-6 last:border-r-0 md:border-r"
+    >
       <HugeiconsIcon
         icon={PlusSignIcon}
         strokeWidth={2}
         className="size-4.5 text-muted-foreground/50 transition-all ease-in-out group-hover:rotate-180 group-hover:text-foreground"
       />
-    </div>
+    </Link>
   );
 }
 
