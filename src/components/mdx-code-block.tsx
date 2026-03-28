@@ -6,7 +6,15 @@ import CopyButton from "./copy-button";
 import { getIconForLanguageExtension } from "./icons";
 
 export const mdxCodeBlockComponents = {
-  figure({ className, ...props }: React.ComponentProps<"figure">) {
+  figure({
+    className,
+    __rawString__,
+    __showLineNumbers__,
+    ...props
+  }: React.ComponentProps<"figure"> & {
+    __rawString__?: string;
+    __showLineNumbers__?: boolean;
+  }) {
     const hasPrettyCode = "data-rehype-pretty-code-figure" in props;
 
     return (
@@ -32,8 +40,9 @@ export const mdxCodeBlockComponents = {
     );
   },
   pre({
-    __withMeta__,
-    __rawString__,
+    "data-with-meta": dataWithMeta,
+    "data-raw": dataRaw,
+    __showLineNumbers__,
 
     __pnpm__,
     __yarn__,
@@ -44,8 +53,9 @@ export const mdxCodeBlockComponents = {
     children,
     ...props
   }: React.ComponentProps<"pre"> & {
-    __withMeta__?: boolean;
-    __rawString__?: string;
+    "data-with-meta"?: string;
+    "data-raw"?: string;
+    __showLineNumbers__?: boolean;
   } & NpmCommands) {
     const isNpmCommand = __pnpm__ && __yarn__ && __npm__ && __bun__;
 
@@ -73,29 +83,28 @@ export const mdxCodeBlockComponents = {
         >
           {children}
         </pre>
-        {__rawString__ && (
+        {dataRaw && (
           <>
             <div className="absolute top-3 right-3 z-20 flex items-center gap-2">
               <CopyButton
                 className={cn(
                   "h-8 w-8 rounded-lg border bg-muted/70 backdrop-blur-xs hover:bg-muted!",
-                  __withMeta__ && "translate-y-[-3.35rem]"
+                  dataWithMeta === "true" && "translate-y-[-3.35rem]"
                 )}
-                value={__rawString__}
+                value={dataRaw}
                 event="copy_code_block"
               />
             </div>
-            {/* {!__withMeta__ && (
-              <div
-                aria-hidden
-                data-fade-overlay
-                style={
-                  {
-                    "--fade-color": "var(--code)",
-                  } as React.CSSProperties
-                }
-              />
-            )} */}
+            {/* {!dataWithMeta && ( */}
+            {/* <div
+              aria-hidden
+              data-fade-overlay
+              style={
+                {
+                  "--fade-color": "oklch(0.12 0 0)",
+                } as React.CSSProperties
+              }
+            /> */}
           </>
         )}
       </div>

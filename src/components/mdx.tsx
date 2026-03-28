@@ -5,6 +5,7 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { Code, Heading } from "./ui/typography";
 import {
   Table,
@@ -22,6 +23,8 @@ import {
 import { rehypeNpmCommand } from "@/lib/rehype-npm-command";
 import { remarkCodeImport } from "@/lib/remark-code-import";
 import { mdxCodeBlockComponents } from "./mdx-code-block";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import Callout from "./callout";
 
 const components: MDXRemoteProps["components"] = {
   h1: (props: React.ComponentProps<"h1">) => (
@@ -50,6 +53,20 @@ const components: MDXRemoteProps["components"] = {
   td: TableCell,
   ...mdxCodeBlockComponents,
   code: Code,
+  Callout: Callout,
+  Steps: (props) => (
+    <div
+      className="md:ml-3.5 md:border-l md:pl-7.5 prose-h3:text-lg prose-h3:text-wrap"
+      {...props}
+    />
+  ),
+  Step: ({ className, ...props }: React.ComponentProps<"h3">) => (
+    <h3 className={cn("step font-medium", className)} {...props} />
+  ),
+  Tabs: Tabs,
+  TabsList: TabsList,
+  TabsTrigger: TabsTrigger,
+  TabsContent: TabsContent,
   a: ({ href, ...props }: React.ComponentProps<"a">) => {
     const isInternalLink =
       href && (href.startsWith("/") || href.startsWith("#"));

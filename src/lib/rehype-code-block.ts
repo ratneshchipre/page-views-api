@@ -14,8 +14,18 @@ export function rehypeCodeRawString() {
         const raw = codeEl.children?.[0]?.value;
         if (!raw) return;
 
-        // Attach to node for later retrieval by rehype-pretty-code
-        node.__rawString__ = raw;
+        // Capture meta for conditional features
+        const meta = (codeEl as any).data?.meta || "";
+
+        (node as any).__rawString__ = raw;
+        (node as any).__showLineNumbers__ = meta.includes("showLineNumbers");
+
+        // Also put them in properties as a fallback
+        node.properties = {
+          ...node.properties,
+          __rawString__: raw,
+          __showLineNumbers__: meta.includes("showLineNumbers"),
+        };
       }
     });
   };
@@ -58,14 +68,25 @@ export function rehypeHighlightCodeRawString() {
 
         // Try to find raw string from properties or carry-over
         const rawString =
-          preElement.properties?.["__rawString__"] || node.__rawString__;
+          preElement.properties?.["__rawString__"] ||
+          (preElement as any).__rawString__ ||
+          (node as any).__rawString__;
+
+        const showLineNumbers =
+          preElement.properties?.["__showLineNumbers__"] ||
+          (preElement as any).__showLineNumbers__ ||
+          (node as any).__showLineNumbers__;
 
         preElement.properties = {
           ...preElement.properties,
-          __withMeta__: node.children?.[0]?.tagName === "figcaption",
-          __rawString__: rawString,
-          "data-line-numbers": "",
+          "data-with-meta":
+            node.children?.[0]?.tagName === "figcaption" ? "true" : "false",
+          "data-raw": rawString,
         };
+
+        if (showLineNumbers) {
+          preElement.properties["data-line-numbers"] = "";
+        }
       }
     });
   };
