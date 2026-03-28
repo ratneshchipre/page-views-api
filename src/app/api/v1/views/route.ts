@@ -2,6 +2,16 @@ import { type NextRequest, NextResponse } from "next/server";
 import { getViews } from "@/lib/api/tracking";
 import { ViewsQuerySchema, parseQueryParams } from "@/lib/api/validation";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     const parsed = parseQueryParams(
@@ -9,18 +19,18 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       ViewsQuerySchema
     );
     if (!parsed.success) {
-      return NextResponse.json({ error: parsed.error }, { status: 400 });
+      return NextResponse.json({ error: parsed.error }, { status: 400, headers: corsHeaders });
     }
     const { site, path } = parsed.data;
 
     const views = await getViews(site, path);
 
-    return NextResponse.json({ views });
+    return NextResponse.json({ views }, { headers: corsHeaders });
   } catch (err: unknown) {
     console.error("Unhandled error:", err);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }

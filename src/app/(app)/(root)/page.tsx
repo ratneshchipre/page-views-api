@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -9,8 +11,20 @@ import {
   ZapIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useEffect } from "react";
 
 export default function Home() {
+  async function getViews() {
+    const data = await fetch(
+      "https://page-views-api.ratneshc.com/api/v1/views?site=page-views-api.ratneshc.com&path=/"
+    ).then((res) => res.json());
+    console.log(data);
+  }
+
+  useEffect(() => {
+    getViews();
+  }, []);
+
   return (
     <div className="relative flex min-h-screen flex-col items-center overflow-hidden">
       <div className="relative flex w-full flex-col items-center">

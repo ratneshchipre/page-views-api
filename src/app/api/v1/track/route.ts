@@ -4,6 +4,16 @@ import { trackView } from "@/lib/api/tracking";
 import { getClientIp, getVisitorId } from "@/lib/api/utils";
 import { TrackQuerySchema, parseQueryParams } from "@/lib/api/validation";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     const parsed = parseQueryParams(
@@ -11,7 +21,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       TrackQuerySchema
     );
     if (!parsed.success) {
-      return NextResponse.json({ error: parsed.error }, { status: 400 });
+      return NextResponse.json({ error: parsed.error }, { status: 400, headers: corsHeaders });
     }
     const { site, path } = parsed.data;
 
@@ -22,16 +32,16 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     await trackView(site, path, visitorId);
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true }, { headers: corsHeaders });
   } catch (err: unknown) {
     if (err instanceof RateLimitError) {
-      return NextResponse.json({ error: err.message }, { status: 429 });
+      return NextResponse.json({ error: err.message }, { status: 429, headers: corsHeaders });
     }
 
     console.error("Unhandled error:", err);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
