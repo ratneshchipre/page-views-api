@@ -1,26 +1,120 @@
 ---
 title: Getting started
 description: Track page views on any website with a simple API. No dashboard, no setup.
-createdAt:
-updatedAt:
+createdAt: "2026-03-28"
+updatedAt: "2026-03-28"
 ---
 
 <br />
 
-Welcome to Page Views API, a minimal API built for developers who just want to track page views without the overhead of full analytics tools. Integrate in seconds and get accurate, privacy-friendly view counts with a simple request.
+Welcome to official documentation of **Page Views API**. This is an open-source API that lets you track how many times a page is visited.
+
+It stores view counts, avoids duplicate tracking, and lets you fetch results instantly.
 
 ## Usage
 
+Understand how to use the API to track and fetch page view data in the following steps:
+
+<Steps>
+
+<Step>Track a View</Step>
+
+Register a new page view for a specific site and path.
+
+### Endpoint URL
+
+```bash
+https://page-views-api.ratneshc.com/api/v1/track?site=example.com&path=/
+```
+
+### Query Parameters
+
+| Parameter | Type     | Required | Description                                                          |
+| --------- | -------- | -------- | -------------------------------------------------------------------- |
+| `site`    | `string` | Yes      | Your unique site identifier (e.g., `example.com`).                   |
+| `path`    | `string` | No       | The page path to track (e.g., `/blog/hello-world`). Defaults to `/`. |
+
+### Response
+
+```json
+{
+  "success": true
+}
+```
+
+### Examples
+
 ```typescript
-import { PageViews } from "page-views-api";
+await fetch("https://page-views-api.ratneshc.com/api/v1/track?site=example.com&path=/")
+  .then(res => res.json())
+  .then(console.log);
+```
 
-const pageViews = new PageViews({
-  apiKey: "YOUR_API_KEY",
-});
+<Step>Get View Count</Step>
 
-const views = await pageViews.getViews({
-  path: "/",
-});
+Retrieve the total view count for a specific site or page.
 
-console.log(views);
+### Endpoint URL
+
+```bash
+https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/
+```
+
+### Query Parameters
+
+| Parameter | Type     | Required | Description                              |
+| --------- | -------- | -------- | ---------------------------------------- |
+| `site`    | `string` | Yes      | Your unique site identifier.             |
+| `path`    | `string` | No       | Specific path to check. Defaults to `/`. |
+
+### Response
+
+```json
+{
+  "views": 1234
+}
+```
+
+### Examples
+
+```typescript
+const res = await fetch("https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/");
+const data = await res.json();
+console.log(`Total views: ${data.views}`);
+```
+
+</Steps>
+
+## Deduplication & Privacy
+
+To prevent inflated numbers, we use a privacy-friendly deduplication mechanism:
+
+- **Deduplication Window:** Views from the same visitor are only counted once every **30 minutes**.
+- **Privacy First:** We don't store IP addresses. Instead, we generate a short-lived **SHA-256 hash** of the visitor's IP and User Agent to identify unique sessions.
+
+## Rate Limiting
+
+To ensure stability, the API is rate-limited:
+
+- **Limit:** 60 requests per minute.
+- **Scope:** Based on the client's IP address.
+- **Automatic Normalization:** Our API automatically handles protocol removal, lowercasing, and trailing slash normalization for both `site` and `path`.
+- **Failures:** Requests exceeding the limit will receive a `429 Too Many Requests` response.
+
+## Error Handling
+
+The API uses standard HTTP status codes:
+
+| Status | Code                    | Description                                                 |
+| ------ | ----------------------- | ----------------------------------------------------------- |
+| `400`  | `Bad Request`           | Missing or invalid query parameters (e.g., missing `site`). |
+| `429`  | `Too Many Requests`     | You have exceeded the rate limit.                           |
+| `500`  | `Internal Server Error` | Something went wrong on our end.                            |
+
+All error responses return a JSON object with an `error` field:
+
+```json
+{
+  "error": "Missing or empty required query parameter: site"
+}
 ```

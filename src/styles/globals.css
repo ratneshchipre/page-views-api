@@ -160,6 +160,7 @@
   }
 }
 
+/* Thanks @ncdai */
 @layer components {
   /* Code Blocks */
   [data-rehype-pretty-code-figure] {
@@ -184,7 +185,7 @@
     }
 
     [data-line] {
-      @apply flex min-h-6 items-center border-l-4 border-l-transparent px-4 py-0.5;
+      @apply flex min-h-6 items-center border-l-4 border-l-transparent py-0.5 pr-4 pl-1;
     }
 
     [data-line] span {
@@ -214,13 +215,14 @@
   }
 
   [data-line-numbers] [data-line] {
-    @apply border-l-0! px-0!;
+    @apply border-l-0! pr-2! pl-0!;
   }
 
   [data-line-numbers] [data-line]::before {
     counter-increment: line;
     content: counter(line);
-    @apply sticky left-0 z-10 inline-block w-12 bg-code pr-4 pl-2 text-right text-sm text-code-number select-none;
+    @apply sticky -left-5 z-10 inline-block w-11 bg-code pr-4 pl-2 text-right text-sm text-code-number select-none;
+    margin-left: -1rem;
     margin-right: 0.5rem;
   }
 
@@ -230,7 +232,7 @@
 
   [data-line-numbers] [data-highlighted-line]::before {
     @apply bg-code-highlight text-foreground/70;
-    box-shadow: inset 4px 0 0 0 oklch(0.623 0.214 259.815); /* Blue strip inside the sticky gutter */
+    box-shadow: inset 4px 0 0 0 oklch(0.623 0.214 259.815);
   }
 
   /* Advanced Fade Overlay */
@@ -252,6 +254,14 @@
     width: var(--fade-width, 6rem);
     height: 2.5rem;
     background: var(--fade-background, var(--fade-linear-gradient));
+  }
+}
+
+@utility step {
+  counter-increment: step;
+  &::before {
+    @apply mr-2 inline-flex size-7 items-center justify-center rounded-full border border-muted-foreground/15 bg-muted text-center -indent-px text-sm font-medium text-muted-foreground md:absolute md:-mt-0.5 md:-ml-11.5 md:size-8;
+    content: counter(step);
   }
 }
 
