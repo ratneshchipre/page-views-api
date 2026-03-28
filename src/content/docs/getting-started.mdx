@@ -85,6 +85,29 @@ console.log(`Total views: ${data.views}`);
 
 </Steps>
 
+## Script Based Tracking
+
+For the simplest integration, you can use our tracking script. It automatically detects the page path and handles single-page applications (SPAs) like React or Next.js.
+
+### Integration
+
+Just add the following script tag to the your website:
+
+```html
+<script
+  src="https://page-views-api.ratneshc.com/script"
+  data-site="example.com"
+  defer
+></script>
+```
+
+### Features
+
+- **Automatic Path Detection**: Automatically picks up the current `window.location.pathname`.
+- **SPA Support**: Listens for route changes (History API) and re-tracks automatically.
+- **Performance**: Optimized with `keepalive: true` to ensure requests complete even if the user leaves the page immediately.
+- **Lightweight**: No dependencies, minimal footprint.
+
 ## Deduplication & Privacy
 
 To prevent inflated numbers, we use a privacy-friendly deduplication mechanism:

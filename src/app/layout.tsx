@@ -41,6 +41,11 @@ export default function RootLayout({
             </div>
           </TooltipProvider>
         </ThemeProvider>
+        <script
+          src="https://page-views-api.ratneshc.com/script"
+          data-site="page-views-api.ratneshc.com"
+          defer
+        ></script>
       </body>
     </html>
   );
