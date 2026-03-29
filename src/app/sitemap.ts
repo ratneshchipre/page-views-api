@@ -2,7 +2,8 @@ import type { MetadataRoute } from "next";
 import { getAllPosts } from "@/data/docs";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL!;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || "https://page-views-api.ratneshc.com";
   const posts = getAllPosts();
 
   const blogPosts = posts.map((post) => ({

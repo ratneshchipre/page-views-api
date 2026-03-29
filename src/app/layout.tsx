@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import ThemeProvider from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
+import { SITE_INFO, X_USERNAME } from "@/config/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,8 +18,43 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Page Views API",
-  description: "A simple API to track page views",
+  metadataBase: new URL(SITE_INFO.url),
+  title: {
+    template: `%s | ${SITE_INFO.name}`,
+    default: SITE_INFO.name,
+  },
+  description: SITE_INFO.description,
+  keywords: SITE_INFO.keywords,
+  authors: [
+    {
+      name: SITE_INFO.author,
+      url: "https://ratneshc.com",
+    },
+  ],
+  creator: SITE_INFO.author,
+  openGraph: {
+    title: SITE_INFO.name,
+    description: SITE_INFO.description,
+    url: SITE_INFO.url,
+    siteName: SITE_INFO.name,
+    images: [
+      {
+        url: SITE_INFO.metaImage,
+        width: 1200,
+        height: 630,
+        alt: SITE_INFO.name,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_INFO.name,
+    description: SITE_INFO.description,
+    images: [SITE_INFO.metaImage],
+    creator: X_USERNAME,
+  },
 };
 
 export default function RootLayout({
