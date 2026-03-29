@@ -5,93 +5,28 @@ createdAt: "2026-03-28"
 updatedAt: "2026-03-28"
 ---
 
-<br />
+## Introduction
 
-Welcome to official documentation of **Page Views API**. This is an open-source API that lets you track how many times a page is visited.
+Welcome to the official documentation of **Page Views API**.
 
-It stores view counts, avoids duplicate tracking, and lets you fetch results instantly.
+Page Views API is an open-source, lightweight solution to track how many times a page is visited &ndash; without complex setup or dashboards.
+
+It provides:
+
+- Simple integration via a script tag
+- Automatic page tracking (including SPAs)
+- Privacy-friendly deduplication
+- Fast and reliable view counts
 
 ## Usage
 
-Understand how to use the API to track and fetch page view data in the following steps:
+Follow the steps below to start tracking page views and retrieving counts.
 
 <Steps>
 
-<Step>Track a View</Step>
+<Step>Add Tracking Script</Step>
 
-Register a new page view for a specific site and path.
-
-### Endpoint URL
-
-```bash
-https://page-views-api.ratneshc.com/api/v1/track?site=example.com&path=/
-```
-
-### Query Parameters
-
-| Parameter | Type     | Required | Description                                                          |
-| --------- | -------- | -------- | -------------------------------------------------------------------- |
-| `site`    | `string` | Yes      | Your unique site identifier (e.g., `example.com`).                   |
-| `path`    | `string` | No       | The page path to track (e.g., `/blog/hello-world`). Defaults to `/`. |
-
-### Response
-
-```json
-{
-  "success": true
-}
-```
-
-### Examples
-
-```typescript
-await fetch("https://page-views-api.ratneshc.com/api/v1/track?site=example.com&path=/")
-  .then(res => res.json())
-  .then(console.log);
-```
-
-<Step>Get View Count</Step>
-
-Retrieve the total view count for a specific site or page.
-
-### Endpoint URL
-
-```bash
-https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/
-```
-
-### Query Parameters
-
-| Parameter | Type     | Required | Description                              |
-| --------- | -------- | -------- | ---------------------------------------- |
-| `site`    | `string` | Yes      | Your unique site identifier.             |
-| `path`    | `string` | No       | Specific path to check. Defaults to `/`. |
-
-### Response
-
-```json
-{
-  "views": 1234
-}
-```
-
-### Examples
-
-```typescript
-const res = await fetch("https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/");
-const data = await res.json();
-console.log(`Total views: ${data.views}`);
-```
-
-</Steps>
-
-## Script Based Tracking
-
-For the simplest integration, you can use our tracking script. It automatically detects the page path and handles single-page applications (SPAs) like React or Next.js.
-
-### Integration
-
-Just add the following script tag to the your website:
+The easiest way to integrate Page Views API is by adding the tracking script to your website.
 
 ```html
 <script
@@ -101,23 +36,89 @@ Just add the following script tag to the your website:
 ></script>
 ```
 
-### Features
+What this does
 
-- **Automatic Path Detection**: Automatically picks up the current `window.location.pathname`.
-- **SPA Support**: Listens for route changes (History API) and re-tracks automatically.
-- **Performance**: Optimized with `keepalive: true` to ensure requests complete even if the user leaves the page immediately.
-- **Lightweight**: No dependencies, minimal footprint.
+- **Automatic Path Detection** - Detects the current page using `window.location.pathname`.
+- **SPA Support** - Tracks route changes automatically in frameworks like React, Next.js, etc.
+- **Reliable Tracking** - Uses `navigator.sendBeacon / fetch` with `keepalive` to ensure requests complete.
+- **Lightweight** - No dependencies. Minimal performance impact.
+
+<Step>Fetch View Count</Step>
+
+You can retrieve the total number of views for a specific page or entire site.
+
+### Endpoint URL
+
+```bash
+GET https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/
+```
+
+### Query Parameters
+
+| Parameter | Type     | Required | Description                      |
+| --------- | -------- | -------- | -------------------------------- |
+| `site`    | `string` | Yes      | Unique identifier for your site. |
+| `path`    | `string` | No       | Page path (defaults to `/`).     |
+
+### Example
+
+```typescript
+const res = await fetch("https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/");
+
+const data = await res.json();
+
+console.log(`Total views: ${data.views}`);
+```
+
+### Displaying Views in UI
+
+```tsx
+import { useEffect, useState } from "react";
+
+export default function ViewCounter() {
+  const [views, setViews] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/")
+      .then(res => res.json())
+      .then(data => setViews(data.views));
+  }, []);
+
+  return (
+    <span className="inline-flex items-center px-2 py-1 text-sm rounded-md border">
+      {views ?? "..."} views
+    </span>
+  );
+}
+```
+
+### Example Response
+
+```json
+{
+  "views": 1234
+}
+```
+
+</Steps>
+
+## How It Works
+
+- A request is sent whenever a page is loaded
+- The API identifies the visitor using a hashed identifier
+- Duplicate views are ignored within a time window
+- View counts are stored and updated in real time
 
 ## Deduplication & Privacy
 
 To prevent inflated numbers, we use a privacy-friendly deduplication mechanism:
 
-- **Deduplication Window:** Views from the same visitor are only counted once every **30 minutes**.
+- **Deduplication Window:** A visitor is counted only once every **30 minutes** per page.
 - **Privacy First:** We don't store IP addresses. Instead, we generate a short-lived **SHA-256 hash** of the visitor's IP and User Agent to identify unique sessions.
 
 ## Rate Limiting
 
-To ensure stability, the API is rate-limited:
+To maintain performance and prevent abuse, the API is rate-limited:
 
 - **Limit:** 60 requests per minute.
 - **Scope:** Based on the client's IP address.
@@ -132,9 +133,9 @@ The API uses standard HTTP status codes:
 | ------ | ----------------------- | ----------------------------------------------------------- |
 | `400`  | `Bad Request`           | Missing or invalid query parameters (e.g., missing `site`). |
 | `429`  | `Too Many Requests`     | You have exceeded the rate limit.                           |
-| `500`  | `Internal Server Error` | Something went wrong on our end.                            |
+| `500`  | `Internal Server Error` | Unexpected server error.                                    |
 
-All error responses return a JSON object with an `error` field:
+Error Response Format:
 
 ```json
 {

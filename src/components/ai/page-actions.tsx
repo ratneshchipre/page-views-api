@@ -86,24 +86,24 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
 }
 
 function getPrompt(url: string) {
-  return `I'm looking at this API documentation: ${url}
+  return `I'm looking at the Page Views API documentation: ${url}
 
-I want to integrate this page view tracking API into my project.
+This is an open-source, privacy-friendly page view tracking API. I want to integrate it into my project.
 
-Help me understand step-by-step:
-- How to correctly send requests to track page views
-- How to fetch and display view counts
-- How to structure requests (headers, body, params)
-- How deduplication and unique visitor tracking works
+Key features of this API:
+- Simple script-based integration for automatic tracking.
+- Support for SPAs (React, Next.js, etc.) via History API interception.
+- Privacy-first: Uses SHA-256 hashing for visitor ID (no PII storage).
+- 30-minute deduplication window.
+- Rate limited (60 req/min).
 
-Provide practical examples using JavaScript/TypeScript (preferably React if relevant).
+Help me with:
+1. Setting up the tracking script effectively.
+2. Manually tracking views using the /api/v1/track endpoint if I need more control.
+3. Fetching and displaying view counts using the /api/v1/views endpoint.
+4. Implementing a "View Counter" component in React/Next.js.
 
-Also:
-- Point out common mistakes (like duplicate counting, wrong usage, etc.)
-- Suggest best practices for accurate tracking
-- Help debug issues if the implementation doesn't work as expected
-
-Be ready to answer follow-up questions based on this API.`;
+Please provide optimized code examples and warn me about common pitfalls like double counting or improper path normalization.`;
 }
 
 export function ViewOptions({ markdownUrl }: { markdownUrl: string }) {
@@ -172,14 +172,14 @@ export function ViewOptions({ markdownUrl }: { markdownUrl: string }) {
         align="end"
       >
         {items.map(({ title, href, icon: Icon }) => (
-          <DropdownMenuItem key={href}>
+          <DropdownMenuItem key={href} className="cursor-pointer">
             <a
               href={href}
               rel="noreferrer noopener"
               target="_blank"
-              className="flex items-center gap-2"
+              className="flex w-full items-center gap-2"
             >
-              <Icon />
+              <Icon className="size-4" />
               {title}
             </a>
           </DropdownMenuItem>

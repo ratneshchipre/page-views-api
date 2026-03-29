@@ -97,13 +97,13 @@ const features = [
     icon: ZapIcon,
     title: "Quick Integration",
     description:
-      "Start tracking views instantly with a single request. No setup required.",
+      "Add a single script tag and start tracking instantly. No manual requests or setup needed.",
   },
   {
     icon: Rocket01Icon,
-    title: "Fast Tracking",
+    title: "Real-time Tracking",
     description:
-      "Optimized for speed with instant view updates and minimal latency.",
+      "Automatically tracks page views and handles SPA navigation without extra code.",
   },
   {
     icon: NerdIcon,
