@@ -2,11 +2,28 @@
 
 An open-source API to count visitors on any page. Simple, no setup, no dashboard.
 
+- Drop-in script, no setup required
+- Tracks views automatically across pages
+- Smart deduplication for accurate counts
+- Optimized for speed and reliability
+
 → Check out the live site: [page-views-api.ratneshc.com](https://page-views-api.ratneshc.com)
+
+<a href="https://page-views-api.ratneshc.com">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./public/images/screenshot-dark.webp">
+    <source media="(prefers-color-scheme: light)" srcset="./public/images/screenshot-light.webp">
+    <img alt="page-views-api.ratneshc.com" src="./public/images/screenshot-light.webp">
+  </picture>
+</a>
 
 ## Documentation
 
 Please refer to the [documentation](https://page-views-api.ratneshc.com/docs/getting-started) for API usage and examples.
+
+## Contributing
+
+Please read the [contributing guide](/CONTRIBUTING.md).
 
 ## Star History
 
