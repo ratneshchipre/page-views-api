@@ -6,19 +6,13 @@ This project is open-source and built for developers. Whether you're fixing bugs
 
 Before you start, please take a moment to review this guide.
 
----
-
 ## Getting Started
 
 Follow these steps to set up the project locally.
 
----
-
 ### 1. Fork the repository
 
 Click the **Fork** button on the top right of this page to create your own copy.
-
----
 
 ### 2. Clone your fork
 
@@ -26,8 +20,6 @@ Click the **Fork** button on the top right of this page to create your own copy.
 git clone https://github.com/<your-username>/page-views-api.git
 cd page-views-api
 ```
-
----
 
 ### 3. Create a new branch
 
@@ -41,8 +33,6 @@ Use meaningful names:
 - `fix/rate-limit-bug`
 - `docs/improve-readme`
 
----
-
 ### 4. Install dependencies
 
 We use **bun** for package management.
@@ -50,8 +40,6 @@ We use **bun** for package management.
 ```bash
 bun install
 ```
-
----
 
 ### 5. Set up environment variables
 
@@ -64,8 +52,6 @@ UPSTASH_REDIS_REST_TOKEN=your_upstash_token
 
 You can get these from your Upstash dashboard.
 
----
-
 ### 6. Run the development server
 
 ```bash
@@ -77,8 +63,6 @@ The project should now be running at:
 ```
 http://localhost:3000
 ```
-
----
 
 ## Project Structure
 
@@ -102,8 +86,6 @@ lib/
 - **app/script/** → tracking script
 - **lib/api/** → core logic (Redis, tracking, validation)
 
----
-
 ## Development Guidelines
 
 - Use **TypeScript**
@@ -112,16 +94,12 @@ lib/
 - Avoid unnecessary dependencies
 - Prefer clarity over cleverness
 
----
-
 ## Making Changes
 
 ### 1. Make your changes
 
 - Add or update code
 - Keep changes focused (avoid unrelated edits)
-
----
 
 ### 2. Test your changes
 
@@ -130,8 +108,6 @@ Before submitting:
 - Verify API endpoints work correctly
 - Check edge cases
 - Ensure nothing breaks
-
----
 
 ### 3. Commit your changes
 
@@ -143,23 +119,17 @@ git commit -m "fix: handle missing site parameter"
 git commit -m "docs: update usage section"
 ```
 
----
-
 ### 4. Push your branch
 
 ```bash
 git push origin feature/your-feature-name
 ```
 
----
-
 ### 5. Open a Pull Request
 
 - Provide a clear title
 - Explain what and why
 - Keep PRs small and focused
-
----
 
 ## Pull Request Guidelines
 
@@ -169,8 +139,6 @@ Please ensure your PR:
 - Solves a specific problem
 - Does not include unrelated changes
 - Includes examples/screenshots if needed
-
----
 
 ## Reporting Issues
 
@@ -182,8 +150,6 @@ If you find a bug or have a suggestion:
    - Steps to reproduce
    - Expected vs actual behavior
 
----
-
 ## Security
 
 If you discover a security issue:
@@ -191,15 +157,11 @@ If you discover a security issue:
 - Do NOT open a public issue
 - Contact privately (add your email here)
 
----
-
 ## Code of Conduct
 
 Please be respectful and constructive.
 
 > Be kind. Be helpful. Be respectful.
-
----
 
 ## Final Note
 
