@@ -3,7 +3,7 @@
 An open-source API to count visitors on any page. Simple, no setup, no dashboard.
 
 - Drop-in script, no setup required
-- Tracks views automatically across pages
+- Track with precision using simple script parameters
 - Smart deduplication for accurate counts
 - Optimized for speed and reliability
 

@@ -91,14 +91,14 @@ function getPrompt(url: string) {
 This is an open-source, privacy-friendly page view tracking API. I want to integrate it into my project.
 
 Key features of this API:
-- Simple script-based integration for automatic tracking.
-- Support for SPAs (React, Next.js, etc.) via History API interception.
+- Simple script-based integration using a path parameter.
+- Focused and fast by tracking once per script instance (no automatic background scanning).
 - Privacy-first: Uses SHA-256 hashing for visitor ID (no PII storage).
 - 30-minute deduplication window.
 - Rate limited (60 req/min).
 
 Help me with:
-1. Setting up the tracking script effectively.
+1. Setting up the tracking script with the data-path attribute.
 2. Manually tracking views using the /api/v1/track endpoint if I need more control.
 3. Fetching and displaying view counts using the /api/v1/views endpoint.
 4. Implementing a "View Counter" component in React/Next.js.

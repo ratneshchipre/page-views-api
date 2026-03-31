@@ -5,7 +5,7 @@ import Logo from "@/components/logo";
 import {
   NerdIcon,
   PlusSignIcon,
-  Rocket01Icon,
+  SearchFocusIcon,
   ZapIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -100,10 +100,10 @@ const features = [
       "Add a single script tag and start tracking instantly. No manual requests or setup needed.",
   },
   {
-    icon: Rocket01Icon,
-    title: "Real-time Tracking",
+    icon: SearchFocusIcon,
+    title: "Precision Tracking",
     description:
-      "Automatically tracks page views and handles SPA navigation without extra code.",
+      "Track specific paths effortlessly and get meaningful insights instantly.",
   },
   {
     icon: NerdIcon,

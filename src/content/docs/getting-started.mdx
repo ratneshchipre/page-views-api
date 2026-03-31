@@ -3,7 +3,7 @@ title: Getting started
 description: An open-source API to count visitors on any page. Simple, no setup,
   no dashboard.
 createdAt: "2026-03-28"
-updatedAt: "2026-03-29"
+updatedAt: "2026-03-31"
 ---
 
 ## Introduction
@@ -15,7 +15,8 @@ Page Views API is an open-source, lightweight solution to track how many times a
 It provides:
 
 - Simple integration via a script tag
-- Automatic page tracking (including SPAs)
+- Parameter-based path tracking
+- Lightweight and focused
 - Privacy-friendly deduplication
 - Fast and reliable view counts
 
@@ -33,14 +34,22 @@ The easiest way to integrate Page Views API is by adding the tracking script to 
 <script
   src="https://page-views-api.ratneshc.com/script"
   data-site="example.com"
+  data-path="/"
   defer
 ></script>
 ```
 
+### Script Parameters
+
+| Parameter   | Required | Default | Description                                                                  |
+| ----------- | -------- | ------- | ---------------------------------------------------------------------------- |
+| `data-site` | **Yes**  | -       | Your unique site identifier.                                                 |
+| `data-path` | **No**   | `/`     | The specific path to track. Useful for separate tracking on different pages. |
+
 What this does
 
-- **Automatic Path Detection** - Detects the current page using `window.location.pathname`.
-- **SPA Support** - Tracks route changes automatically in frameworks like React, Next.js, etc.
+- **Focused Tracking** - Tracks exactly the path you provide in `data-path`.
+- **Fast and Predictable** - Tracks once per script instance for predictable and precise metrics.
 - **Reliable Tracking** - Uses `navigator.sendBeacon / fetch` with `keepalive` to ensure requests complete.
 - **Lightweight** - No dependencies. Minimal performance impact.
 
