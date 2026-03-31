@@ -7,7 +7,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   if (typeof window === 'undefined' || window.__PV_LOADED__) return;
   window.__PV_LOADED__ = true;
 
-  const normalize = function(p) {
+  const normalize = (p) => {
     if (!p) return "/";
     p = p.trim().replace(/\/+$/, "");
     if (!p.startsWith("/")) p = "/" + p;
@@ -16,41 +16,86 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     return p || "/";
   };
 
-  const script = document.currentScript || document.querySelector('script[src*="/script"]');
-  const site = script ? script.getAttribute('data-site') : null;
-  const scriptPathRaw = script ? script.getAttribute('data-path') : null;
-  const currentPath = normalize(window.location.pathname);
-  const trackPath = scriptPathRaw ? normalize(scriptPathRaw) : currentPath;
+  // 1. Robust script tag detection
+  const findScript = () => {
+    const current = document.currentScript;
+    if (current && current.getAttribute('data-site')) return current;
+    
+    // Fallback: Find script by src and required attribute
+    return document.querySelector('script[src*="/script"][data-site]');
+  };
 
-  if (!site) {
-    console.debug("[PV] Tracking skipped: data-site parameter missing.");
+  const scriptTag = findScript();
+  
+  if (!scriptTag) {
+    console.warn("[PV] Tracking skipped: Script tag with 'data-site' not found.");
     return;
   }
 
-  if (scriptPathRaw && currentPath !== trackPath) {
-    console.debug("[PV] Tracking skipped: path mismatch.", { current: currentPath, target: trackPath });
+  const site = scriptTag.getAttribute('data-site');
+  const manualPath = scriptTag.getAttribute('data-path');
+
+  // 2. Clear warning if data-site is missing
+  if (!site) {
+    console.warn("[PV] Tracking skipped: 'data-site' attribute is required.");
     return;
   }
 
   function track() {
+    const currentPath = normalize(window.location.pathname);
+    // Use manual path if provided, otherwise auto-detect current path
+    const trackPath = manualPath ? normalize(manualPath) : currentPath;
+
+    // 3. Strict precision check if manualPath is set
+    if (manualPath && currentPath !== normalize(manualPath)) {
+      console.debug("[PV] Path mismatch, skipping auto-track:", { current: currentPath, target: normalize(manualPath) });
+      return;
+    }
+
     const apiBase = "${origin}";
     const trackUrl = apiBase + "/api/v1/track?site=" + encodeURIComponent(site) + "&path=" + encodeURIComponent(trackPath);
 
-    try {
-      if (typeof fetch === 'function') {
-        fetch(trackUrl, { method: 'GET', keepalive: true, mode: 'no-cors' }).catch(function() {});
-      } else if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
-        const img = new Image();
-        img.src = trackUrl;
-      }
-    } catch (e) {}
+    // 3. Debugging logs
+    console.log("[PV] Attempting to track:", { site, currentPath, trackPath, trackUrl });
+
+    // 3. Removed no-cors for better error reporting
+    fetch(trackUrl, { method: 'GET', keepalive: true })
+      .then(res => {
+        if (res.ok) {
+          console.log("[PV] Tracking successful.");
+        } else {
+          console.error("[PV] Tracking failed. Status:", res.status);
+        }
+      })
+      .catch(err => {
+        console.error("[PV] Tracking request error:", err);
+      });
   }
 
+  // 4. Handle initial load
   if (document.readyState === 'complete') {
     track();
   } else {
-    window.addEventListener('load', track);
+    window.addEventListener('load', () => track());
   }
+
+  // 6. SPA Navigation Support (Next.js, etc.)
+  let lastPath = window.location.pathname;
+  const handleRouteChange = () => {
+    if (window.location.pathname !== lastPath) {
+      lastPath = window.location.pathname;
+      track();
+    }
+  };
+
+  // Monkey-patch history.pushState to detect client-side navigation
+  const originalPushState = history.pushState;
+  history.pushState = function() {
+    originalPushState.apply(this, arguments);
+    handleRouteChange();
+  };
+  
+  window.addEventListener('popstate', handleRouteChange);
 })();`;
 
   return new NextResponse(script, {
