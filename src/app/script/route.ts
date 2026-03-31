@@ -9,21 +9,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   const script = document.currentScript || document.querySelector('script[src*="/script"]');
   const site = script ? script.getAttribute('data-site') : null;
+  const path = script ? script.getAttribute('data-path') || '/' : '/';
 
   if (!site) {
-    console.debug("[PV] Tracking skipped: data-site attribute missing.");
+    console.debug("[PV] Tracking skipped: data-site parameter missing.");
     return;
   }
 
-  let lastTrackedPath = null;
-
   function track() {
-    const path = window.location.pathname.replace(/\\/$/, "") || "/";
-    
-    // Prevent double tracking on same path (common in some SPA transitions)
-    if (path === lastTrackedPath) return;
-    lastTrackedPath = path;
-
     const apiBase = "${origin}";
     const trackUrl = apiBase + "/api/v1/track?site=" + encodeURIComponent(site) + "&path=" + encodeURIComponent(path);
 
@@ -31,44 +24,16 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       if (typeof fetch === 'function') {
         fetch(trackUrl, { method: 'GET', keepalive: true, mode: 'no-cors' }).catch(function() {});
       } else if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
-        // Beacon is POST, but your API currently only handles GET.
-        // We fallback to simple image pixel if fetch isn't available to ensure GET works.
         const img = new Image();
         img.src = trackUrl;
       }
     } catch (e) {}
   }
 
-  // Initial hit
   if (document.readyState === 'complete') {
     track();
   } else {
     window.addEventListener('load', track);
-  }
-
-  // SPA Route Change Tracking
-  const handleRouteChange = function() {
-    // Wait for Next.js/React to update the DOM and URL
-    setTimeout(track, 0);
-  };
-
-  window.addEventListener('popstate', handleRouteChange);
-
-  // Intercept History pushes
-  const pushState = history.pushState;
-  if (pushState) {
-    history.pushState = function() {
-      pushState.apply(history, arguments);
-      handleRouteChange();
-    };
-  }
-
-  const replaceState = history.replaceState;
-  if (replaceState) {
-    history.replaceState = function() {
-      replaceState.apply(history, arguments);
-      handleRouteChange();
-    };
   }
 })();`;
 
