@@ -84,11 +84,11 @@ export default function RootLayout({
             token: process.env.NEXT_PUBLIC_CF_BEACON_TOKEN,
           })}
         />
-        {/* <script
+        <script
+          defer
           src="https://page-views-api.ratneshc.com/script"
           data-site="page-views-api.ratneshc.com"
-          defer
-        ></script> */}
+        />
       </body>
     </html>
   );
