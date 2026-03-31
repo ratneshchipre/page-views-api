@@ -20,11 +20,7 @@ export function rateLimitKey(ip: string, site?: string, path?: string): string {
 }
 
 export function getVisitorId(request: Request): string {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("cf-connecting-ip") ||
-    "unknown";
-
+  const ip = getClientIp(request);
   const ua = request.headers.get("user-agent") || "unknown";
 
   return createHash("sha256").update(`${ip}:${ua}`).digest("hex").slice(0, 16);

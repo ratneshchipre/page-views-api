@@ -7,16 +7,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   if (typeof window === 'undefined' || window.__PV_LOADED__) return;
   window.__PV_LOADED__ = true;
 
-  const script = document.currentScript || document.querySelector('script[src*="/script"]');
-  const site = script ? script.getAttribute('data-site') : null;
-  const path = script ? script.getAttribute('data-path') || '/' : '/';
-
-  if (!site) {
-    console.debug("[PV] Tracking skipped: data-site parameter missing.");
-    return;
-  }
-
   const normalize = function(p) {
+    if (!p) return "/";
     p = p.trim().replace(/\/+$/, "");
     if (!p.startsWith("/")) p = "/" + p;
     p = p.replace(/\/+/g, "/");
@@ -24,17 +16,25 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     return p || "/";
   };
 
+  const script = document.currentScript || document.querySelector('script[src*="/script"]');
+  const site = script ? script.getAttribute('data-site') : null;
+  const scriptPathRaw = script ? script.getAttribute('data-path') : null;
   const currentPath = normalize(window.location.pathname);
-  const targetPath = normalize(path);
+  const trackPath = scriptPathRaw ? normalize(scriptPathRaw) : currentPath;
 
-  if (currentPath !== targetPath) {
-    console.debug("[PV] Tracking skipped: path mismatch.", { current: currentPath, target: targetPath });
+  if (!site) {
+    console.debug("[PV] Tracking skipped: data-site parameter missing.");
+    return;
+  }
+
+  if (scriptPathRaw && currentPath !== trackPath) {
+    console.debug("[PV] Tracking skipped: path mismatch.", { current: currentPath, target: trackPath });
     return;
   }
 
   function track() {
     const apiBase = "${origin}";
-    const trackUrl = apiBase + "/api/v1/track?site=" + encodeURIComponent(site) + "&path=" + encodeURIComponent(targetPath);
+    const trackUrl = apiBase + "/api/v1/track?site=" + encodeURIComponent(site) + "&path=" + encodeURIComponent(trackPath);
 
     try {
       if (typeof fetch === 'function') {

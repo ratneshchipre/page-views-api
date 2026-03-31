@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 import { rateLimit, RateLimitError } from "@/lib/api/rate-limit";
 import { trackView } from "@/lib/api/tracking";
 import { getClientIp, getVisitorId } from "@/lib/api/utils";

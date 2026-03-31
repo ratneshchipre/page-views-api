@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 import { getViews } from "@/lib/api/tracking";
 import { ViewsQuerySchema, parseQueryParams } from "@/lib/api/validation";
 
@@ -19,7 +20,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       ViewsQuerySchema
     );
     if (!parsed.success) {
-      return NextResponse.json({ error: parsed.error }, { status: 400, headers: corsHeaders });
+      return NextResponse.json(
+        { error: parsed.error },
+        { status: 400, headers: corsHeaders }
+      );
     }
     const { site, path } = parsed.data;
 
