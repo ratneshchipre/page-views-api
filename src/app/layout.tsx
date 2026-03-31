@@ -77,6 +77,13 @@ export default function RootLayout({
             </div>
           </TooltipProvider>
         </ThemeProvider>
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({
+            token: process.env.NEXT_PUBLIC_CF_BEACON_TOKEN,
+          })}
+        />
         {/* <script
           src="https://page-views-api.ratneshc.com/script"
           data-site="page-views-api.ratneshc.com"
