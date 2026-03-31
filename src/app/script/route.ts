@@ -1,106 +1,129 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+const DEBUG = process.env.NODE_ENV !== "production";
+
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const origin = request.nextUrl.origin;
 
-  const script = `(function() {
-  if (typeof window === 'undefined' || window.__PV_LOADED__) return;
-  window.__PV_LOADED__ = true;
+  const script = `
+(function () {
+  var globalDebug = ${DEBUG ? "true" : "false"};
+  var debug = globalDebug; // Default from server
 
-  const normalize = (p) => {
-    if (!p) return "/";
-    p = p.trim().replace(/\/+$/, "");
-    if (!p.startsWith("/")) p = "/" + p;
-    p = p.replace(/\/+/g, "/");
-    if (p.length > 1 && p.endsWith("/")) p = p.slice(0, -1);
-    return p || "/";
-  };
-
-  // 1. Robust script tag detection
-  const findScript = () => {
-    const current = document.currentScript;
-    if (current && current.getAttribute('data-site')) return current;
-    
-    // Fallback: Find script by src and required attribute
-    return document.querySelector('script[src*="/script"][data-site]');
-  };
-
-  const scriptTag = findScript();
-  
-  if (!scriptTag) {
-    console.warn("[PV] Tracking skipped: Script tag with 'data-site' not found.");
-    return;
+  function log() {
+    if (!debug || typeof console === "undefined" || !console.log) return;
+    console.log.apply(console, arguments);
   }
 
-  const site = scriptTag.getAttribute('data-site');
-  const manualPath = scriptTag.getAttribute('data-path');
+  window.__PV__ = window.__PV__ || {};
+  window.__PV__.status = "loading";
 
-  // 2. Clear warning if data-site is missing
-  if (!site) {
-    console.warn("[PV] Tracking skipped: 'data-site' attribute is required.");
-    return;
-  }
+  try {
+    if (typeof window === "undefined" || window.__PV_LOADED__) return;
+    window.__PV_LOADED__ = true;
 
-  function track() {
-    const currentPath = normalize(window.location.pathname);
-    // Use manual path if provided, otherwise auto-detect current path
-    const trackPath = manualPath ? normalize(manualPath) : currentPath;
+    var normalize = function (p) {
+      if (!p) return "/";
+      p = String(p).trim().replace(new RegExp("/+$"), "");
+      if (!p.startsWith("/")) p = "/" + p;
+      p = p.replace(new RegExp("/+", "g"), "/");
+      if (p.length > 1 && p.endsWith("/")) p = p.slice(0, -1);
+      return p || "/";
+    };
 
-    // 3. Strict precision check if manualPath is set
-    if (manualPath && currentPath !== normalize(manualPath)) {
-      console.debug("[PV] Path mismatch, skipping auto-track:", { current: currentPath, target: normalize(manualPath) });
+    var findScript = function () {
+      var cur = document.currentScript;
+      if (cur && cur.getAttribute("data-site")) return cur;
+      var all = document.querySelectorAll("script[data-site]");
+      for (var i = all.length - 1; i >= 0; i--) {
+        var s = all[i];
+        var src = s.getAttribute("src") || "";
+        if (src.indexOf("/script") !== -1) return s;
+      }
+      return document.querySelector("script[data-site]");
+    };
+
+    var scriptTag = findScript();
+
+    if (!scriptTag) {
+      window.__PV__.status = "missing-script-tag";
       return;
     }
 
-    const apiBase = "${origin}";
-    const trackUrl = apiBase + "/api/v1/track?site=" + encodeURIComponent(site) + "&path=" + encodeURIComponent(trackPath);
+    var site = scriptTag.getAttribute("data-site");
+    var manualPath = scriptTag.getAttribute("data-path");
+    var userDebug = scriptTag.getAttribute("data-debug") === "true";
 
-    // 3. Debugging logs
-    console.log("[PV] Attempting to track:", { site, currentPath, trackPath, trackUrl });
+    // Update debug state if user explicitly asks for it
+    debug = globalDebug || userDebug;
 
-    // 3. Removed no-cors for better error reporting
-    fetch(trackUrl, { method: 'GET', keepalive: true })
-      .then(res => {
-        if (res.ok) {
-          console.log("[PV] Tracking successful.");
-        } else {
-          console.error("[PV] Tracking failed. Status:", res.status);
-        }
-      })
-      .catch(err => {
-        console.error("[PV] Tracking request error:", err);
-      });
-  }
-
-  // 4. Handle initial load
-  if (document.readyState === 'complete') {
-    track();
-  } else {
-    window.addEventListener('load', () => track());
-  }
-
-  // 6. SPA Navigation Support (Next.js, etc.)
-  let lastPath = window.location.pathname;
-  const handleRouteChange = () => {
-    if (window.location.pathname !== lastPath) {
-      lastPath = window.location.pathname;
-      track();
+    if (!site || !manualPath) {
+      window.__PV__.status = "missing-parameters";
+      if (!site) console.warn("[PV] data-site is required.");
+      if (!manualPath) console.warn("[PV] data-path is required for Precision Tracking.");
+      return;
     }
-  };
 
-  // Monkey-patch history.pushState to detect client-side navigation
-  const originalPushState = history.pushState;
-  history.pushState = function() {
-    originalPushState.apply(this, arguments);
-    handleRouteChange();
-  };
-  
-  window.addEventListener('popstate', handleRouteChange);
-})();`;
+    var apiOrigin = "${origin}";
+
+    function track() {
+      var currentPath = normalize(window.location.pathname);
+      var trackPath = normalize(manualPath);
+
+      // Strict Precision Tracking: Only fire if configured path matches current URL
+      if (currentPath !== trackPath) {
+        log("[PV] Path mismatch, skipping:", { current: currentPath, target: trackPath });
+        return;
+      }
+
+      var trackUrl =
+        apiOrigin +
+        "/api/v1/track?site=" +
+        encodeURIComponent(site) +
+        "&path=" +
+        encodeURIComponent(trackPath);
+
+      log("[PV] Tracking visit:", trackPath);
+
+      fetch(trackUrl, { method: "GET", keepalive: true, mode: "cors", credentials: "omit" }).catch(
+        function (err) {
+          console.error("[PV] error", err);
+        }
+      );
+    }
+
+    if (document.readyState === "complete") {
+      track();
+    } else {
+      window.addEventListener("load", track);
+    }
+
+    // Monitor route changes to see if we navigate INTO the target path
+    window.addEventListener("popstate", track);
+    var originalPushState = history.pushState;
+    if (typeof originalPushState === "function") {
+      history.pushState = function () {
+        var ret = originalPushState.apply(this, arguments);
+        if (typeof queueMicrotask === "function") {
+          queueMicrotask(track);
+        } else {
+          setTimeout(track, 0);
+        }
+        return ret;
+      };
+    }
+
+    window.__PV__.status = "ready";
+    window.__PV__.track = track;
+  } catch (e) {
+    window.__PV__.status = "error";
+  }
+})();
+`;
 
   return new NextResponse(script, {
     headers: {
-      "Content-Type": "application/javascript",
+      "Content-Type": "application/javascript; charset=utf-8",
       "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
       "Access-Control-Allow-Origin": "*",
     },

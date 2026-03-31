@@ -83,12 +83,13 @@ export default function RootLayout({
           data-cf-beacon={JSON.stringify({
             token: process.env.NEXT_PUBLIC_CF_BEACON_TOKEN,
           })}
-        />
+        ></script>
         <script
           defer
-          src="https://page-views-api.ratneshc.com/script"
+          src="/script"
           data-site="page-views-api.ratneshc.com"
-        />
+          data-path="/"
+        ></script>
       </body>
     </html>
   );

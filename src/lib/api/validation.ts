@@ -32,7 +32,7 @@ export const TrackQuerySchema = z.object({
 
   path: z
     .string()
-    .optional()
+    .min(1, "Missing or empty required query parameter: path")
     .transform((v) => normalizePath(v)),
 });
 
@@ -44,7 +44,7 @@ export const ViewsQuerySchema = z.object({
 
   path: z
     .string()
-    .optional()
+    .min(1, "Missing or empty required query parameter: path")
     .transform((v) => normalizePath(v)),
 });
 
