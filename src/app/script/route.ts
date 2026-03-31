@@ -16,9 +16,25 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     return;
   }
 
+  const normalize = function(p) {
+    p = p.trim().replace(/\/+$/, "");
+    if (!p.startsWith("/")) p = "/" + p;
+    p = p.replace(/\/+/g, "/");
+    if (p.length > 1 && p.endsWith("/")) p = p.slice(0, -1);
+    return p || "/";
+  };
+
+  const currentPath = normalize(window.location.pathname);
+  const targetPath = normalize(path);
+
+  if (currentPath !== targetPath) {
+    console.debug("[PV] Tracking skipped: path mismatch.", { current: currentPath, target: targetPath });
+    return;
+  }
+
   function track() {
     const apiBase = "${origin}";
-    const trackUrl = apiBase + "/api/v1/track?site=" + encodeURIComponent(site) + "&path=" + encodeURIComponent(path);
+    const trackUrl = apiBase + "/api/v1/track?site=" + encodeURIComponent(site) + "&path=" + encodeURIComponent(targetPath);
 
     try {
       if (typeof fetch === 'function') {

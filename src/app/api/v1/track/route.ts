@@ -21,12 +21,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       TrackQuerySchema
     );
     if (!parsed.success) {
-      return NextResponse.json({ error: parsed.error }, { status: 400, headers: corsHeaders });
+      return NextResponse.json(
+        { error: parsed.error },
+        { status: 400, headers: corsHeaders }
+      );
     }
     const { site, path } = parsed.data;
 
     const ip = getClientIp(request);
-    await rateLimit(ip);
+    await rateLimit(ip, site, path);
 
     const visitorId = getVisitorId(request);
 
@@ -35,7 +38,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ success: true }, { headers: corsHeaders });
   } catch (err: unknown) {
     if (err instanceof RateLimitError) {
-      return NextResponse.json({ error: err.message }, { status: 429, headers: corsHeaders });
+      return NextResponse.json(
+        { error: err.message },
+        { status: 429, headers: corsHeaders }
+      );
     }
 
     console.error("Unhandled error:", err);

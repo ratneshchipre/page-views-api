@@ -4,8 +4,12 @@ import { rateLimitKey } from "@/lib/api/utils";
 const RATE_LIMIT_REQUESTS = 60; // max requests per window
 const RATE_LIMIT_WINDOW_SECONDS = 60; // 1 minute
 
-export async function rateLimit(ip: string): Promise<void> {
-  const key = rateLimitKey(ip);
+export async function rateLimit(
+  ip: string,
+  site?: string,
+  path?: string
+): Promise<void> {
+  const key = rateLimitKey(ip, site, path);
 
   const pipeline = redis.pipeline();
   pipeline.incr(key);

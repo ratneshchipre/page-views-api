@@ -12,8 +12,11 @@ export function viewedKey(
   return `viewed:${site}:${path}:${visitorId}`;
 }
 
-export function rateLimitKey(ip: string): string {
-  return `rate:${ip}`;
+export function rateLimitKey(ip: string, site?: string, path?: string): string {
+  const parts = ["rate", ip];
+  if (site) parts.push(site);
+  if (path) parts.push(path);
+  return parts.join(":");
 }
 
 export function getVisitorId(request: Request): string {
