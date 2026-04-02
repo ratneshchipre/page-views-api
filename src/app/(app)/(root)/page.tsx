@@ -9,6 +9,7 @@ import {
   ZapIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import VisitorCount from "@/components/visitor-count";
 
 export default function Home() {
   return (
@@ -17,6 +18,17 @@ export default function Home() {
         <SectionCorners />
         <div className="mt-12 mb-6">
           <Logo />
+        </div>
+        <div className="mb-4 flex justify-center">
+          <div className="flex h-8 items-center rounded-full bg-zinc-50 px-4 font-geist-sans text-sm font-medium dark:bg-white/5">
+            <span className="font-geist-pixel-square tracking-wide text-muted-foreground">
+              You&apos;re the{" "}
+              <span className="text-foreground">
+                <VisitorCount />
+              </span>{" "}
+              visitor
+            </span>
+          </div>
         </div>
         <div className="mb-6 flex flex-col items-center gap-2 px-5 text-center font-geist-sans">
           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -39,7 +51,7 @@ export default function Home() {
           </Link>
         </div>
         <div className="mb-12 flex justify-center">
-          <div className="flex h-8 items-center rounded-full bg-zinc-50 px-4 font-geist-sans text-sm font-medium dark:bg-white/5">
+          <div className="flex h-8 items-center rounded-full bg-zinc-50 px-4 font-geist-pixel-square text-sm font-medium dark:bg-white/5">
             <span className="text-muted-foreground">Backed by</span>
             <span className="ml-1">no one</span>
           </div>
