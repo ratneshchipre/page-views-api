@@ -98,10 +98,9 @@ Key features of this API:
 - Rate limited (60 req/min).
 
 Help me with:
-1. Setting up the tracking script with the data-path attribute.
-2. Manually tracking views using the /api/v1/track endpoint if I need more control.
-3. Fetching and displaying view counts using the /api/v1/views endpoint.
-4. Implementing a "View Counter" component in React/Next.js.
+1. Setting up the tracking script with the required data-path and data-site attributes.
+2. Fetching and displaying view counts using the /api/v1/views endpoint.
+3. Implementing a "View Counter" component in React/Next.js.
 
 Please provide optimized code examples and warn me about common pitfalls like double counting or improper path normalization.`;
 }
