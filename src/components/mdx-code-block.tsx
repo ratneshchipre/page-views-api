@@ -42,6 +42,7 @@ export const mdxCodeBlockComponents = {
   pre({
     "data-with-meta": dataWithMeta,
     "data-raw": dataRaw,
+    __rawString__,
     __showLineNumbers__,
 
     __pnpm__,
@@ -55,6 +56,7 @@ export const mdxCodeBlockComponents = {
   }: React.ComponentProps<"pre"> & {
     "data-with-meta"?: string;
     "data-raw"?: string;
+    __rawString__?: string;
     __showLineNumbers__?: boolean;
   } & NpmCommands) {
     const isNpmCommand = __pnpm__ && __yarn__ && __npm__ && __bun__;

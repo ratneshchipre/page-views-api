@@ -3,84 +3,154 @@ title: Getting started
 description: An open-source API to count visitors on any page. Simple, no setup,
   no dashboard.
 createdAt: "2026-03-28"
-updatedAt: "2026-03-31"
+updatedAt: "2026-04-02"
 ---
 
 ## Introduction
 
-Welcome to the official documentation of **Page Views API**.
+**Page Views API** is an open-source, serverless solution to track how many times a specific page has been visited &ndash; without any dashboards, accounts, or complex setup.
 
-Page Views API is an open-source, lightweight solution to track how many times a page is visited &ndash; without complex setup or dashboards.
+It provides two things:
 
-It provides:
+- A **tracking script** you drop into any website to count visits
+- A **REST API** to read those counts and display them anywhere
 
-- Simple integration via a script tag
-- Parameter-based path tracking
-- Lightweight and focused
-- Privacy-friendly deduplication
-- Fast and reliable view counts
+The model is **Precision Tracking** &ndash; you explicitly tell the script exactly which path to track. This means no accidental tracking of every route and no noisy data.
+
+---
 
 ## Usage
 
-Follow the steps below to start tracking page views and retrieving counts.
-
 <Steps>
 
-<Step>Add Tracking Script</Step>
+<Step>Add the Tracking Script</Step>
 
-The easiest way to integrate Page Views API is by adding the tracking script to your website.
+Drop a single `<script>` tag into any HTML page. That's it.
+
+```html
+<script
+  src="https://page-views-api.ratneshc.com/script"
+  data-site="example.com"
+  data-path="/blog/my-post"
+  defer
+></script>
+```
+
+### Script Attributes
+
+| Attribute    | Required | Description                                                                                                                     |
+| ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `src`        | **Yes**  | Always `https://page-views-api.ratneshc.com/script`.                                                                            |
+| `data-site`  | **Yes**  | Your unique site identifier. Use your domain (e.g. `example.com`). Protocol and trailing slashes are stripped automatically.    |
+| `data-path`  | **Yes**  | The specific page path to track (e.g. `/`, `/blog/my-post`). The script **only fires** when the current URL matches this value. |
+| `data-debug` | No       | Set to `"true"` to enable console logging. Useful during local development and integration testing.                             |
+
+<Callout type="info" title="Precision Tracking">
+  The script uses **strict path matching**. It compares `data-path` against the
+  current `window.location.pathname`. If they don't match, no request is made.
+  This gives you full control over what gets counted.
+</Callout>
+
+### How the script works
+
+When a page loads, the script:
+
+1. Reads `data-site` and `data-path` from its own `<script>` tag
+2. Normalizes the current URL path (strips trailing slashes, collapses double slashes)
+3. Compares it to `data-path` &ndash; if they don't match it exits silently
+4. If they match, it calls `GET /api/v1/track?site=…&path=…` using `fetch` with `keepalive: true`
+5. The API deduplicates the visit and increments the counter
+
+### SPA & Client-side Navigation
+
+The script is fully compatible with **Single Page Applications** (Next.js, React, Vue, etc.) where the browser never fully reloads on navigation.
+
+It hooks into the browser's history API to detect route changes:
+
+- **`history.pushState`** &ndash; intercepted so the script fires on every client-side navigation
+- **`popstate`** &ndash; listened to handle browser Back / Forward buttons
+
+> Each navigation triggers `track()`, which re-checks the path match. The counter only increments when the new URL matches `data-path`.
+
+### Using `data-debug`
 
 ```html
 <script
   src="https://page-views-api.ratneshc.com/script"
   data-site="example.com"
   data-path="/"
+  data-debug="true"
   defer
 ></script>
 ```
 
-### Script Parameters
+With `data-debug="true"`, you'll see logs like:
 
-| Parameter   | Required | Default | Description                                                  |
-| ----------- | -------- | ------- | ------------------------------------------------------------ |
-| `data-site` | **Yes**  | -       | Your unique site identifier.                                 |
-| `data-path` | **Yes**  | -       | The specific path to track. Required for Precision Tracking. |
+```
+[PV] Tracking visit: /
+```
 
-What this does
+```
+[PV] Path mismatch, skipping: { current: "/about", target: "/" }
+```
 
-- **Focused Tracking** - Tracks exactly the path you provide in `data-path`.
-- **Fast and Predictable** - Tracks once per script instance for predictable and precise metrics.
-- **Reliable Tracking** - Uses `navigator.sendBeacon / fetch` with `keepalive` to ensure requests complete.
-- **Lightweight** - No dependencies. Minimal performance impact.
+The global `window.__PV__` object is also available for debugging:
 
-<Step>Fetch View Count</Step>
+| Property               | Description                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| `window.__PV__.status` | Current state: `loading`, `ready`, `missing-script-tag`, `missing-parameters`, or `error` |
+| `window.__PV__.track`  | The tracking function &ndash; call manually to trigger a track                            |
 
-You can retrieve the total number of views for a specific page.
+<Step>Fetch View Counts</Step>
 
-### Endpoint URL
+Once views are being tracked, you can read the count for any path using the views endpoint.
+
+### Endpoint
 
 ```bash
-https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/
+GET https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/
 ```
 
 ### Query Parameters
 
-| Parameter | Type     | Required | Description                      |
-| --------- | -------- | -------- | -------------------------------- |
-| `site`    | `string` | Yes      | Unique identifier for your site. |
-| `path`    | `string` | Yes      | Page path to track/view.         |
+| Parameter | Type     | Required | Description                                            |
+| --------- | -------- | -------- | ------------------------------------------------------ |
+| `site`    | `string` | **Yes**  | Your site identifier (same value used in `data-site`). |
+| `path`    | `string` | **Yes**  | The page path to fetch view count for.                 |
 
-### Example
+### Response
+
+```json
+{
+  "views": 1234
+}
+```
+
+### Examples
+
+<Tabs defaultValue="fetch">
+<TabsList>
+  <TabsTrigger value="fetch">Fetch</TabsTrigger>
+  <TabsTrigger value="react">React</TabsTrigger>
+  <TabsTrigger value="swr">SWR</TabsTrigger>
+</TabsList>
+
+<TabsContent value="fetch">
 
 ```typescript
-const res = await fetch("https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/");
+const res = await fetch(
+  "https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/"
+);
 
 const data = await res.json();
+// { views: 1234 }
 
 console.log(`Total views: ${data.views}`);
 ```
 
-### Displaying Views in UI
+</TabsContent>
+
+<TabsContent value="react">
 
 ```tsx
 import { useEffect, useState } from "react";
@@ -90,65 +160,141 @@ export default function ViewCounter() {
 
   useEffect(() => {
     fetch("https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/")
-      .then(res => res.json())
-      .then(data => setViews(data.views));
+      .then((res) => res.json())
+      .then((data) => setViews(data.views));
   }, []);
 
-  return (
-    <span className="inline-flex items-center px-2 py-1 text-sm rounded-md border">
-      {views ?? "..."} views
-    </span>
+  if (views === null) return <span>...</span>;
+
+  return <span>{views.toLocaleString()} views</span>;
+}
+```
+
+</TabsContent>
+
+<TabsContent value="swr">
+
+```tsx
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
+export default function ViewCounter() {
+  const { data, isLoading } = useSWR(
+    "https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/",
+    fetcher,
+    { revalidateOnFocus: false, dedupingInterval: 60000 }
   );
+
+  if (isLoading) return <span>...</span>;
+
+  return <span>{data?.views?.toLocaleString()} views</span>;
 }
 ```
 
-### Example Response
-
-```json
-{
-  "views": 1234
-}
-```
+</TabsContent>
+</Tabs>
 
 </Steps>
 
+---
+
 ## How It Works
 
-- A request is sent whenever a page is loaded
-- The API identifies the visitor using a hashed identifier
-- Duplicate views are ignored within a time window
-- View counts are stored and updated in real time
+Here's what happens end-to-end when a visitor lands on a tracked page:
+
+1. The browser loads your `<script>` tag and executes the tracking script
+2. The script normalizes the path and checks it matches `data-path`
+3. A `GET /api/v1/track` request is made with `site` and `path`
+4. The API generates a short-lived **visitor ID** &ndash; a 16-character SHA-256 hash derived from the visitor's IP address and User-Agent string
+5. The visitor ID is checked against a Redis deduplication key for that `site` + `path`
+6. If the visitor is new within the window, the counter is incremented and the key is set with a TTL
+7. If the visitor already exists in the window, the request is acknowledged but the counter is **not** incremented
+
+---
 
 ## Deduplication & Privacy
 
-To prevent inflated numbers, we use a privacy-friendly deduplication mechanism:
+To keep view counts accurate and respect visitor privacy:
 
-- **Deduplication Window:** A visitor is counted only once every **30 minutes** per page.
-- **Privacy First:** We don't store IP addresses. Instead, we generate a short-lived **SHA-256 hash** of the visitor's IP and User Agent to identify unique sessions.
+- **Deduplication window:** A visitor is counted **once every 30 minutes** per `site` + `path` combination
+- **No IP storage:** IP addresses are never stored. They are combined with the User-Agent and immediately hashed (SHA-256), producing a short-lived token that expires with the TTL
+- **No cookies:** The script sets no cookies and reads no local storage
+- **No personal data:** Nothing that can identify an individual is persisted
+
+---
+
+## API Input Normalization
+
+Both endpoints silently normalize the `site` and `path` values before processing, so minor formatting inconsistencies don't create duplicate counters.
+
+### `site` normalization
+
+| Input                 | Normalized    |
+| --------------------- | ------------- |
+| `https://example.com` | `example.com` |
+| `http://example.com/` | `example.com` |
+| `EXAMPLE.COM`         | `example.com` |
+
+### `path` normalization
+
+| Input          | Normalized   |
+| -------------- | ------------ |
+| `/blog/`       | `/blog`      |
+| `blog`         | `/blog`      |
+| `//blog//post` | `/blog/post` |
+| _(empty)_      | `/`          |
+
+---
 
 ## Rate Limiting
 
-To maintain performance and prevent abuse, the API is rate-limited:
+To protect the API from abuse:
 
-- **Limit:** 60 requests per minute.
-- **Scope:** Based on the client's IP address.
-- **Automatic Normalization:** Our API automatically handles protocol removal, lowercasing, and trailing slash normalization for both `site` and `path`.
-- **Failures:** Requests exceeding the limit will receive a `429 Too Many Requests` response.
+- **Limit:** 60 requests per 60-second window
+- **Scope:** Per IP address, scoped to the `site` + `path` being tracked
+- **Response on limit exceeded:** `429 Too Many Requests`
+
+<Callout type="warning" title="Rate limit exceeded">
+  If you receive a `429`, wait 60 seconds before retrying. The window resets
+  automatically.
+</Callout>
+
+---
 
 ## Error Handling
 
-The API uses standard HTTP status codes:
+Both endpoints return standard HTTP status codes and a consistent JSON error body.
 
-| Status | Code                    | Description                                                 |
-| ------ | ----------------------- | ----------------------------------------------------------- |
-| `400`  | `Bad Request`           | Missing or invalid query parameters (e.g., missing `site`). |
-| `429`  | `Too Many Requests`     | You have exceeded the rate limit.                           |
-| `500`  | `Internal Server Error` | Unexpected server error.                                    |
-
-Error Response Format:
+### Error Response Format
 
 ```json
 {
   "error": "Missing or empty required query parameter: site"
 }
 ```
+
+### Status Codes
+
+| Status | Meaning               | When it happens                                                    |
+| ------ | --------------------- | ------------------------------------------------------------------ |
+| `200`  | OK                    | Request succeeded.                                                 |
+| `400`  | Bad Request           | A required query parameter (`site` or `path`) is missing or empty. |
+| `429`  | Too Many Requests     | Rate limit exceeded for this IP + site + path.                     |
+| `500`  | Internal Server Error | Unexpected server-side error.                                      |
+
+---
+
+## CORS
+
+Both endpoints support **cross-origin requests** out of the box.
+
+```
+Access-Control-Allow-Origin: *
+```
+
+```
+Access-Control-Allow-Methods: GET, OPTIONS
+```
+
+You can call the views endpoint directly from a browser, a React component, or any client-side code without needing a proxy or server-side wrapper.

@@ -51,7 +51,7 @@ export default function Home() {
           </Link>
         </div>
         <div className="mb-12 flex justify-center">
-          <div className="flex h-8 items-center rounded-full bg-zinc-50 px-4 font-geist-pixel-square text-sm font-medium dark:bg-white/5">
+          <div className="flex h-8 items-center rounded-full bg-zinc-50 px-4 font-geist-pixel-square text-sm font-medium tracking-wide dark:bg-white/5">
             <span className="text-muted-foreground">Backed by</span>
             <span className="ml-1">no one</span>
           </div>
