@@ -41,10 +41,10 @@ The easiest way to integrate Page Views API is by adding the tracking script to 
 
 ### Script Parameters
 
-| Parameter   | Required | Default | Description                                                                  |
-| ----------- | -------- | ------- | ---------------------------------------------------------------------------- |
-| `data-site` | **Yes**  | -       | Your unique site identifier.                                                 |
-| `data-path` | **No**   | `/`     | The specific path to track. Useful for separate tracking on different pages. |
+| Parameter   | Required | Default | Description                                                  |
+| ----------- | -------- | ------- | ------------------------------------------------------------ |
+| `data-site` | **Yes**  | -       | Your unique site identifier.                                 |
+| `data-path` | **Yes**  | -       | The specific path to track. Required for Precision Tracking. |
 
 What this does
 
@@ -55,12 +55,12 @@ What this does
 
 <Step>Fetch View Count</Step>
 
-You can retrieve the total number of views for a specific page or entire site.
+You can retrieve the total number of views for a specific page.
 
 ### Endpoint URL
 
 ```bash
-GET https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/
+https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/
 ```
 
 ### Query Parameters
@@ -68,7 +68,7 @@ GET https://page-views-api.ratneshc.com/api/v1/views?site=example.com&path=/
 | Parameter | Type     | Required | Description                      |
 | --------- | -------- | -------- | -------------------------------- |
 | `site`    | `string` | Yes      | Unique identifier for your site. |
-| `path`    | `string` | No       | Page path (defaults to `/`).     |
+| `path`    | `string` | Yes      | Page path to track/view.         |
 
 ### Example
 
