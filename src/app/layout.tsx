@@ -55,6 +55,9 @@ export const metadata: Metadata = {
     images: [SITE_INFO.metaImage],
     creator: X_USERNAME,
   },
+  icons: {
+    icon: "/images/logo.png",
+  },
 };
 
 export default function RootLayout({
