@@ -2,6 +2,43 @@
   "name": "page-views-api",
   "version": "0.1.0",
   "private": true,
+  "description": "An open-source API to count visitors on any page.",
+  "homepage": "https://page-views-api.ratneshc.com",
+  "license": "MIT",
+  "author": {
+    "name": "Ratnesh Chipre",
+    "email": "ratneshchipre@gmail.com",
+    "url": "https://github.com/ratneshchipre"
+  },
+  "funding": "https://github.com/sponsors/ratneshchipre",
+  "bugs": {
+    "url": "https://github.com/ratneshchipre/page-views-api/issues"
+  },
+  "keywords": [
+    "page views api",
+    "page view tracker",
+    "website visitor counter api",
+    "track page views api",
+    "open source analytics api",
+    "Ratnesh",
+    "ratnesh chipre",
+    "track website visitors",
+    "page visit counter",
+    "visitor tracking api",
+    "api for page views",
+    "count page views",
+    "react page view tracking",
+    "nextjs analytics api",
+    "real time page views",
+    "open source developer tools",
+    "typescript",
+    "react",
+    "next.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ratneshchipre/page-views-api.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
