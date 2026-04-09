@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { useTheme } from "next-themes";
+import { useHotkeys } from "react-hotkeys-hook";
+
 import { HugeiconsIcon } from "@hugeicons/react";
 import { MoonIcon, Sun01Icon } from "@hugeicons/core-free-icons";
 import { buttonVariants } from "@/components/ui/button";
@@ -11,23 +13,24 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Kbd } from "@/components/ui/kbd";
 import { cn } from "@/lib/utils";
 
 export default function ThemeToggle({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  const handleToggle = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
+
+  useHotkeys("d", handleToggle);
+
+  React.useEffect(() => setMounted(true), []);
 
   if (!mounted) {
     return <Skeleton className={cn("size-9 rounded-md", className)} />;
   }
-
-  const handleToggle = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  };
 
   const Icon = resolvedTheme === "dark" ? MoonIcon : Sun01Icon;
 
@@ -45,8 +48,14 @@ export default function ThemeToggle({ className }: { className?: string }) {
         <HugeiconsIcon icon={Icon} strokeWidth={2} className="size-4" />
         <span className="sr-only">Toggle Theme</span>
       </TooltipTrigger>
-      <TooltipContent side="bottom" sideOffset={3} className="font-geist-mono">
-        <p>Toggle Mode</p>
+      <TooltipContent
+        side="bottom"
+        className="py-2 pr-2 pl-3 font-geist-mono text-[0.85rem]"
+      >
+        <div className="flex items-center gap-2.5">
+          Toggle Mode
+          <Kbd>D</Kbd>
+        </div>
       </TooltipContent>
     </Tooltip>
   );
