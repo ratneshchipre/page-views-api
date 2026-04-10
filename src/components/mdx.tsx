@@ -1,11 +1,19 @@
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import Link from "next/link";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 
-import Link from "next/link";
 import { cn } from "@/lib/utils";
+import {
+  rehypeCodeRawString,
+  rehypeHighlightCode,
+  rehypeHighlightCodeRawString,
+} from "@/lib/rehype-code-block";
+import { rehypeNpmCommand } from "@/lib/rehype-npm-command";
+import { remarkCodeImport } from "@/lib/remark-code-import";
+
 import { Code, Heading } from "./ui/typography";
 import {
   Table,
@@ -15,13 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import {
-  rehypeCodeRawString,
-  rehypeHighlightCode,
-  rehypeHighlightCodeRawString,
-} from "@/lib/rehype-code-block";
-import { rehypeNpmCommand } from "@/lib/rehype-npm-command";
-import { remarkCodeImport } from "@/lib/remark-code-import";
 import { mdxCodeBlockComponents } from "./mdx-code-block";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import Callout from "./callout";
@@ -94,12 +95,10 @@ const options: MDXRemoteProps["options"] = {
         { target: "_blank", rel: "nofollow noopener noreferrer" },
       ],
       rehypeSlug,
-      // rehypeComponent,
       rehypeCodeRawString,
       rehypeHighlightCode,
       rehypeHighlightCodeRawString,
       rehypeNpmCommand,
-      // [rehypeAddQueryParams, UTM_PARAMS],
     ],
   },
 };

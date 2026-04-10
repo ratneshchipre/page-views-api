@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { PackageManager } from "@/hooks/use-package-manager";
 import { usePackageManager } from "@/hooks/use-package-manager";
@@ -27,7 +28,7 @@ export function CodeBlockCommand({
   }, [__pnpm__, __yarn__, __npm__, __bun__]);
 
   return (
-    <div className="bg-code relative overflow-hidden rounded-xl">
+    <div className="relative overflow-hidden rounded-xl bg-code">
       <Tabs
         className="gap-0"
         value={packageManager}
@@ -38,12 +39,11 @@ export function CodeBlockCommand({
         <div className="px-4 shadow-[inset_0_-1px_0_0] shadow-border">
           <TabsList className="h-10 rounded-none bg-transparent p-0 dark:bg-transparent [&_svg]:me-2 [&_svg]:size-4 [&_svg]:text-muted-foreground">
             {getIconForPackageManager(packageManager)}
-
             {Object.entries(tabs).map(([key]) => {
               return (
                 <TabsTrigger
                   key={key}
-                  className="h-7 rounded-lg p-0 px-2 font-mono"
+                  className="h-7 rounded-lg p-0 px-2 font-geist-mono"
                   value={key}
                 >
                   {key}
@@ -59,7 +59,7 @@ export function CodeBlockCommand({
                 <code
                   data-slot="code-block"
                   data-language="bash"
-                  className="font-mono text-sm leading-none text-muted-foreground"
+                  className="font-geist-mono text-sm leading-none text-muted-foreground"
                 >
                   <span className="select-none">$ </span>
                   {value}

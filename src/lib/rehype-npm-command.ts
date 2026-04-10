@@ -1,5 +1,7 @@
 import { visit } from "unist-util-visit";
+
 import type { UnistNode, UnistTree } from "@/types/unist";
+
 import { getNpmCommands } from "./code-commands";
 
 export function rehypeNpmCommand() {

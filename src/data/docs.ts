@@ -1,6 +1,7 @@
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
+
 import type { Post, PostMetadata } from "@/types/docs";
 
 function parseFrontmatter(fileContent: string) {

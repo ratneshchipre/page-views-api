@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+
 import { getAllPosts } from "@/data/docs";
 import { getLLMText } from "@/lib/get-llm-text";
 

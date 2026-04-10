@@ -1,9 +1,11 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+
 import { getAllPosts } from "@/data/docs";
 import { MDX } from "@/components/mdx";
 import { Prose } from "@/components/ui/typography";
 import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
+import { toIsoDate } from "@/utils/date";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -104,17 +106,4 @@ export default async function DocsPage({
       </Prose>
     </div>
   );
-}
-
-function toIsoDate(value?: string) {
-  if (!value) {
-    return undefined;
-  }
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return undefined;
-  }
-
-  return date.toISOString();
 }

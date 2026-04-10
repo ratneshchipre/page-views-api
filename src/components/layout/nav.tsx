@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import type { NavItem as NavItemType } from "@/types/nav";
 import { cn } from "@/lib/utils";
 

@@ -1,7 +1,9 @@
 "use client";
 
 import useSWR from "swr";
+
 import { getPageViews } from "@/data/page-views";
+
 import { Skeleton } from "./ui/skeleton";
 
 export default function VisitorCount() {

@@ -4,10 +4,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Icons } from "./icons";
 import { addQueryParams } from "@/utils/url";
 import { UTM_PARAMS } from "@/config/site";
 import { cn } from "@/lib/utils";
+
+import { Icons } from "./icons";
 
 type GitHubStarsProps = {
   repo: string;

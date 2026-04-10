@@ -1,5 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
+
 export const dynamic = "force-dynamic";
+
 import { getViews } from "@/lib/api/tracking";
 import { ViewsQuerySchema, parseQueryParams } from "@/lib/api/validation";
 

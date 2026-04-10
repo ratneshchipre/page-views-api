@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { SOURCE_CODE_GITHUB_URL } from "@/config/site";
-import Logo from "./logo";
+
 import { SectionCorners } from "@/app/(app)/(root)/page";
+import { SOURCE_CODE_GITHUB_URL } from "@/config/site";
+
+import Logo from "./logo";
 
 export default function SiteFooter() {
   return (
