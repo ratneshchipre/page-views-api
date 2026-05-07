@@ -72,6 +72,12 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} antialiased selection:bg-foreground selection:text-primary-foreground`}
     >
+      <head>
+        <meta
+          name="scrolllaunch-verify"
+          content="b7b2487a4e7b249db6517b935ca29777"
+        />
+      </head>
       <body>
         <ThemeProvider>
           <Toaster position="top-center" />
