@@ -94,12 +94,14 @@ export default function RootLayout({
             token: process.env.NEXT_PUBLIC_CF_BEACON_TOKEN,
           })}
         ></script>
-        <script
-          defer
-          src="/script"
-          data-site="page-views-api.ratneshc.com"
-          data-path="/"
-        ></script>
+        {process.env.NODE_ENV === "production" && (
+          <script
+            defer
+            src="/script"
+            data-site="page-views-api.ratneshc.com"
+            data-path="/"
+          ></script>
+        )}
       </body>
     </html>
   );
