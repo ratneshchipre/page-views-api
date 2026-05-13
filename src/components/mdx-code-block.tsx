@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import type { NpmCommands } from "@/types/unist";
 
 import { CodeBlockCommand } from "./code-block-command";
-import CopyButton from "./copy-button";
+import { CopyButton } from "./copy-button";
 import { getIconForLanguageExtension } from "./icons";
 
 export const mdxCodeBlockComponents = {
@@ -89,24 +89,15 @@ export const mdxCodeBlockComponents = {
           <>
             <div className="absolute top-3 right-3 z-20 flex items-center gap-2">
               <CopyButton
+                size="icon-sm"
+                variant="ghost"
+                text={dataRaw}
                 className={cn(
-                  "h-8 w-8 rounded-lg border bg-muted/70 backdrop-blur-xs hover:bg-muted!",
+                  "rounded-md bg-code text-muted-foreground",
                   dataWithMeta === "true" && "translate-y-[-3.35rem]"
                 )}
-                value={dataRaw}
-                event="copy_code_block"
               />
             </div>
-            {/* {!dataWithMeta && ( */}
-            {/* <div
-              aria-hidden
-              data-fade-overlay
-              style={
-                {
-                  "--fade-color": "oklch(0.12 0 0)",
-                } as React.CSSProperties
-              }
-            /> */}
           </>
         )}
       </div>

@@ -12,7 +12,11 @@ import {
 } from "@hugeicons/core-free-icons";
 
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  ButtonGroup,
+  ButtonGroupSeparator,
+} from "@/components/ui/button-group";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/icons";
+import { CopyStateIcon } from "@/components/copy-button";
 
 const cache = new Map<string, string>();
 
@@ -68,21 +73,21 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
   };
 
   return (
-    <button
-      className="flex h-8 cursor-pointer items-center gap-2 rounded-l-full pr-2 pl-2.5 font-geist-sans text-sm font-medium disabled:pointer-events-none disabled:opacity-50"
+    <Button
+      className="h-8 cursor-pointer gap-2 border-none pr-2 pl-2.5 font-geist-sans text-[0.8125rem] [&_svg:not([class*='size-'])]:size-3.5"
+      variant="secondary"
       aria-busy={isCopying}
       disabled={isCopying}
       onClick={handleCopy}
     >
-      {state === "idle" ? (
-        <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} className="mt-0.5" />
-      ) : state === "done" ? (
-        <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="mt-0.5" />
-      ) : (
-        <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="mt-0.5" />
-      )}
+      <CopyStateIcon
+        state={state}
+        idleIcon={<HugeiconsIcon icon={Copy01Icon} strokeWidth={2} />}
+        doneIcon={<HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />}
+        errorIcon={<HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} />}
+      />
       Copy Page
-    </button>
+    </Button>
   );
 }
 
@@ -154,15 +159,16 @@ export function ViewOptions({ markdownUrl }: { markdownUrl: string }) {
         className={cn(
           buttonVariants({
             variant: "secondary",
-            className:
-              "flex size-8 cursor-pointer items-center justify-center gap-2 rounded-r-full text-sm",
+            size: "icon",
+            className: "cursor-pointer border-none font-geist-sans",
           })
         )}
+        aria-label="View Options"
       >
         <HugeiconsIcon
           icon={ArrowDown01Icon}
           strokeWidth={2}
-          className="mt-0.5 mr-1 size-4"
+          className="size-4"
         />
         <span className="sr-only">View Options</span>
       </DropdownMenuTrigger>
@@ -195,17 +201,10 @@ export function LLMCopyButtonWithViewOptions({
   markdownUrl: string;
 }) {
   return (
-    <div
-      className={cn(
-        buttonVariants({
-          variant: "secondary",
-          className:
-            "gap-0 divide-x overflow-hidden px-0 font-geist-sans dark:divide-white/10",
-        })
-      )}
-    >
+    <ButtonGroup>
       <LLMCopyButton markdownUrl={markdownUrl} />
+      <ButtonGroupSeparator className="border-y-4 border-secondary dark:bg-white/20 data-vertical:my-0" />
       <ViewOptions markdownUrl={markdownUrl} />
-    </div>
+    </ButtonGroup>
   );
 }
