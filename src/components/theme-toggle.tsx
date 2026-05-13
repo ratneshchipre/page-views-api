@@ -3,9 +3,9 @@
 import * as React from "react";
 import { useTheme } from "next-themes";
 import { useHotkeys } from "react-hotkeys-hook";
-
 import { HugeiconsIcon } from "@hugeicons/react";
 import { MoonIcon, Sun01Icon } from "@hugeicons/core-free-icons";
+
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {

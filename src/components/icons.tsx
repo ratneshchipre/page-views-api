@@ -1,8 +1,8 @@
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ComputerTerminal01Icon,
   FileEmpty02Icon,
 } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 

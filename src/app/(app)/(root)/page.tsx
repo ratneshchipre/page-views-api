@@ -1,15 +1,15 @@
 import Link from "next/link";
-
-import { cn } from "@/lib/utils";
-import Logo from "@/components/logo";
-import { buttonVariants } from "@/components/ui/button";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
   NerdIcon,
   PlusSignIcon,
   SearchFocusIcon,
   ZapIcon,
 } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+
+import { cn } from "@/lib/utils";
+import Logo from "@/components/logo";
+import { buttonVariants } from "@/components/ui/button";
 import VisitorCount from "@/components/visitor-count";
 
 export default function Home() {
