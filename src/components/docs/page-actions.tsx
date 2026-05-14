@@ -127,6 +127,11 @@ export function ViewOptions({ markdownUrl }: { markdownUrl: string }) {
         icon: Icons.markdown,
       },
       {
+        title: "Open in GitHub",
+        href: `https://github.com/ratneshchipre/page-views-api/blob/main/src/content/docs/${markdownUrl.split("/").slice(-1).join("/")}`,
+        icon: Icons.github,
+      },
+      {
         title: "Open in ChatGPT",
         href: `https://chatgpt.com/?${new URLSearchParams({
           hints: "search",
@@ -147,6 +152,13 @@ export function ViewOptions({ markdownUrl }: { markdownUrl: string }) {
           text: q,
         })}`,
         icon: Icons.cursor,
+      },
+      {
+        title: "Open in Grok",
+        href: `https://grok.com/?${new URLSearchParams({
+          q,
+        })}`,
+        icon: Icons.grok,
       },
     ];
 

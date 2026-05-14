@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getAllPosts } from "@/data/docs";
 import { MDX } from "@/components/mdx";
 import { Prose } from "@/components/ui/typography";
-import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
+import { LLMCopyButtonWithViewOptions } from "@/components/docs/page-actions";
 import { toIsoDate } from "@/utils/date";
 
 export async function generateStaticParams() {
