@@ -61,6 +61,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
           "--border-radius": "var(--radius)",
+          "--geist-sans-font-family":
+            "var(--font-geist-sans), 'Geist', 'Hanken Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+          fontFamily: "var(--geist-sans-font-family)",
         } as React.CSSProperties
       }
       toastOptions={{

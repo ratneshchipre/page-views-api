@@ -1,11 +1,12 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { getAllPosts } from "@/data/docs";
+import { getAllPosts, getPostUrl } from "@/data/docs";
 import { MDX } from "@/components/mdx";
 import { Prose } from "@/components/ui/typography";
 import { LLMCopyButtonWithViewOptions } from "@/components/docs/page-actions";
 import { toIsoDate } from "@/utils/date";
+import PostShareMenu from "@/components/docs/post-share-menu";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -96,9 +97,12 @@ export default async function DocsPage({
                 : ""}
             </p>
           </div>
-          <LLMCopyButtonWithViewOptions
-            markdownUrl={`/docs/${post.slug}.mdx`}
-          />
+          <div className="flex items-center gap-2">
+            <LLMCopyButtonWithViewOptions
+              markdownUrl={`/docs/${post.slug}.mdx`}
+            />
+            <PostShareMenu url={getPostUrl(post)} />
+          </div>
         </div>
         <div className="-mt-5">
           <MDX code={post.content} />

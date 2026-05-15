@@ -41,3 +41,7 @@ function getMDXData(dir: string) {
 export function getAllPosts() {
   return getMDXData(path.join(process.cwd(), "src", "content", "docs"));
 }
+
+export function getPostUrl(post: Post) {
+  return `/docs/${post.slug}`;
+}
