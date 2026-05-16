@@ -74,7 +74,7 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
 
   return (
     <Button
-      className="h-8 cursor-pointer gap-2 border-none pr-2 pl-2.5 font-geist-sans text-[0.8125rem] [&_svg:not([class*='size-'])]:size-3.5"
+      className="h-8 gap-2 border-none pr-2 pl-2.5 font-geist-sans text-[0.8125rem] [&_svg:not([class*='size-'])]:size-3.5"
       variant="secondary"
       aria-busy={isCopying}
       disabled={isCopying}
@@ -172,7 +172,7 @@ export function ViewOptions({ markdownUrl }: { markdownUrl: string }) {
           buttonVariants({
             variant: "secondary",
             size: "icon",
-            className: "cursor-pointer border-none font-geist-sans",
+            className: "border-none font-geist-sans",
           })
         )}
         aria-label="View Options"
@@ -190,12 +190,12 @@ export function ViewOptions({ markdownUrl }: { markdownUrl: string }) {
         align="end"
       >
         {items.map(({ title, href, icon: Icon }) => (
-          <DropdownMenuItem key={href} className="cursor-pointer">
+          <DropdownMenuItem key={href}>
             <a
               href={href}
               rel="noreferrer noopener"
               target="_blank"
-              className="flex w-full items-center gap-2"
+              className="flex w-full cursor-default items-center gap-2"
             >
               <Icon className="size-4" />
               {title}

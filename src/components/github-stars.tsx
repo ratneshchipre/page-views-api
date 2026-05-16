@@ -24,7 +24,7 @@ export default function GithubStars({
       <TooltipTrigger
         className={cn(
           buttonVariants({ variant: "ghost", size: "sm" }),
-          "cursor-pointer rounded-md py-4.5 hover:bg-muted"
+          "rounded-md py-4.5 hover:bg-muted"
         )}
       >
         <a

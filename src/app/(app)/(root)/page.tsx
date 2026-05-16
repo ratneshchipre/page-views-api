@@ -34,7 +34,7 @@ export default function Home() {
             href="/docs/getting-started"
             className={cn(
               buttonVariants({ variant: "default", size: "lg" }),
-              "cursor-pointer px-5 font-geist-sans transition-colors active:scale-98"
+              "px-5 font-geist-sans transition-colors active:scale-98"
             )}
           >
             Get Started
@@ -92,7 +92,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className={cn(
               buttonVariants({ variant: "outline", size: "lg" }),
-              "cursor-pointer px-4 font-geist-sans transition-colors active:scale-98"
+              "px-4 font-geist-sans transition-colors active:scale-98"
             )}
           >
             Sponsor my work

@@ -39,7 +39,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
       <TooltipTrigger
         className={cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
-          "size-9 cursor-pointer rounded-md hover:bg-accent",
+          "size-9 rounded-md hover:bg-accent",
           className
         )}
         onClick={handleToggle}
