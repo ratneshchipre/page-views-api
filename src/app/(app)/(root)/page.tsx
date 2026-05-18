@@ -77,6 +77,22 @@ export default function Home() {
           ))}
         </div>
       </div>
+      <div className="relative w-full border-b py-12 font-geist-sans">
+        <SectionCorners />
+        <div className="mb-12 px-5 text-center">
+          <h2 className="mb-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+            Tracking across the web
+          </h2>
+          <p className="text-sm text-balance text-muted-foreground sm:text-base">
+            A look at how Page Views API is being used across real projects.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3">
+          {metrics.map((metric) => (
+            <MetricCard key={metric.value} {...metric} />
+          ))}
+        </div>
+      </div>
       <div className="relative w-full py-12 font-geist-sans">
         <SectionCorners />
         <div className="mb-12 px-5 text-center">
@@ -145,6 +161,35 @@ function FeatureCard({ icon, title, description }: FeatureCardProps) {
       <p className="mt-1.5 text-base font-medium text-foreground">
         {description}
       </p>
+    </div>
+  );
+}
+
+const metrics = [
+  {
+    value: "10+",
+    label: "Websites Using",
+  },
+  {
+    value: "2.3K+",
+    label: "Unique Visitors Tracked",
+  },
+  {
+    value: "5",
+    label: "GitHub Stars",
+  },
+];
+
+interface MetricCardProps {
+  value: string;
+  label: string;
+}
+
+function MetricCard({ value, label }: MetricCardProps) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-1 border-y border-dashed p-6 last:border-r-0 md:border-r">
+      <p className="text-2xl font-semibold text-foreground">{value}</p>
+      <p className="text-base font-medium text-muted-foreground">{label}</p>
     </div>
   );
 }
