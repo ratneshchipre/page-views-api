@@ -160,6 +160,13 @@ export function ViewOptions({ markdownUrl }: { markdownUrl: string }) {
         })}`,
         icon: Icons.grok,
       },
+      {
+        title: "Open in Scira AI",
+        href: `https://scira.ai/?${new URLSearchParams({
+          q,
+        })}`,
+        icon: Icons.scira,
+      },
     ];
 
     return _items;

@@ -167,7 +167,7 @@ function FeatureCard({ icon, title, description }: FeatureCardProps) {
 
 const metrics = [
   {
-    value: "10+",
+    value: "15+",
     label: "Websites Using",
   },
   {
