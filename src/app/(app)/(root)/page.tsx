@@ -1,3 +1,4 @@
+import * as React from "react";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -11,6 +12,7 @@ import { cn } from "@/lib/utils";
 import Logo from "@/components/logo";
 import { buttonVariants } from "@/components/ui/button";
 import VisitorCount from "@/components/visitor-count";
+import { getGitHubStargazerCount } from "@/data/github-stargazers";
 
 export default function Home() {
   return (
@@ -89,8 +91,13 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3">
           {metrics.map((metric) => (
-            <MetricCard key={metric.value} {...metric} />
+            <MetricCard key={metric.label} {...metric} />
           ))}
+          <React.Suspense
+            fallback={<MetricCard value="—" label="GitHub Stars" />}
+          >
+            <GitHubStarsMetricCard />
+          </React.Suspense>
         </div>
       </div>
       <div className="relative w-full py-12 font-geist-sans">
@@ -174,10 +181,6 @@ const metrics = [
     value: "2.3K+",
     label: "Unique Visitors Tracked",
   },
-  {
-    value: "5",
-    label: "GitHub Stars",
-  },
 ];
 
 interface MetricCardProps {
@@ -192,6 +195,11 @@ function MetricCard({ value, label }: MetricCardProps) {
       <p className="text-base font-medium text-muted-foreground">{label}</p>
     </div>
   );
+}
+
+async function GitHubStarsMetricCard() {
+  const count = await getGitHubStargazerCount();
+  return <MetricCard value={String(count)} label="GitHub Stars" />;
 }
 
 function SponsorCard() {
