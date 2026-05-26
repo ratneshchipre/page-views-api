@@ -11,9 +11,9 @@ An open-source API to count visitors on any page. Simple, no setup, no dashboard
 
 <a href="https://page-views-api.ratneshc.com">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./public/images/screenshot-dark.webp">
-    <source media="(prefers-color-scheme: light)" srcset="./public/images/screenshot-light.webp">
-    <img alt="page-views-api.ratneshc.com" src="./public/images/screenshot-light.webp">
+    <source media="(prefers-color-scheme: dark)" srcset="./.github/screenshot-dark.webp">
+    <source media="(prefers-color-scheme: light)" srcset="./.github/screenshot-light.webp">
+    <img alt="page-views-api.ratneshc.com" src="./.github/screenshot-light.webp">
   </picture>
 </a>
 
