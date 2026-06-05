@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { NAV_ITEMS } from "@/config/site";
-import { SectionCorners } from "@/app/(app)/(root)/page";
 import { Separator } from "@/components/ui/separator";
 
 import ThemeToggle from "./theme-toggle";
@@ -9,6 +8,7 @@ import SiteHeaderWrapper from "./site-header-wrapper";
 import DesktopNav from "./layout/desktop-nav";
 import NavItemGitHub from "./nav-item-github";
 import Logo from "./logo";
+import SectionCorners from "./landing/section-corners";
 
 export default function SiteHeader() {
   return (
