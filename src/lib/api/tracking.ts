@@ -1,5 +1,5 @@
 import { redis } from "@/lib/api/redis";
-import { viewsKey, viewedKey } from "@/lib/api/utils";
+import { viewedKey, viewsKey } from "@/lib/api/utils";
 
 const DEDUP_WINDOW_SECONDS = 60 * 30; // 30 minutes
 

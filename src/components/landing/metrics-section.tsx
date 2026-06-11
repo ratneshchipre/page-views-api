@@ -1,13 +1,12 @@
 import * as React from "react";
-
 import { getGitHubStargazerCount } from "@/data/github-stargazers";
 
 import {
-  SectionWrapper,
-  SectionHeader,
   SectionContent,
-  SectionTitle,
   SectionDescription,
+  SectionHeader,
+  SectionTitle,
+  SectionWrapper,
 } from "./section";
 
 const metrics = [

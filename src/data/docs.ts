@@ -1,6 +1,6 @@
 import fs from "fs";
-import matter from "gray-matter";
 import path from "path";
+import matter from "gray-matter";
 
 import type { Post, PostMetadata } from "@/types/docs";
 

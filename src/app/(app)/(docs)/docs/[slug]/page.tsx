@@ -1,12 +1,12 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-
 import { getAllPosts, getPostUrl } from "@/data/docs";
-import { MDX } from "@/components/mdx";
+import { toIsoDate } from "@/utils/date";
+
 import { Prose } from "@/components/ui/typography";
 import { LLMCopyButtonWithViewOptions } from "@/components/docs/page-actions";
-import { toIsoDate } from "@/utils/date";
 import PostShareMenu from "@/components/docs/post-share-menu";
+import { MDX } from "@/components/mdx";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();

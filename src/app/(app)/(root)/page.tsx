@@ -1,8 +1,8 @@
-import HeroSection from "@/components/landing/hero-section";
 import ApiShowcaseSection from "@/components/landing/api-showcase-section";
-import FeaturesSection from "@/components/landing/features-section";
-import MetricsSection from "@/components/landing/metrics-section";
 import FeaturedVideoSection from "@/components/landing/featured-video-section";
+import FeaturesSection from "@/components/landing/features-section";
+import HeroSection from "@/components/landing/hero-section";
+import MetricsSection from "@/components/landing/metrics-section";
 import SponsorSection from "@/components/landing/sponsor-section";
 
 export default function Home() {

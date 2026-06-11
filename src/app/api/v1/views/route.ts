@@ -1,9 +1,9 @@
-import { type NextRequest, NextResponse } from "next/server";
-
-export const dynamic = "force-dynamic";
+import { NextResponse, type NextRequest } from "next/server";
 
 import { getViews } from "@/lib/api/tracking";
-import { ViewsQuerySchema, parseQueryParams } from "@/lib/api/validation";
+import { parseQueryParams, ViewsQuerySchema } from "@/lib/api/validation";
+
+export const dynamic = "force-dynamic";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",

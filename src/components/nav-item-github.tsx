@@ -1,6 +1,7 @@
-import GitHubStars from "@/components/github-stars";
-import { SOURCE_CODE_GITHUB_REPO } from "@/config/site";
 import { getGitHubStargazerCount } from "@/data/github-stargazers";
+
+import { SOURCE_CODE_GITHUB_REPO } from "@/config/site";
+import GitHubStars from "@/components/github-stars";
 
 export default async function NavItemGitHub() {
   const stargazersCount = await getGitHubStargazerCount();

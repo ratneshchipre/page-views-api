@@ -1,11 +1,11 @@
-import { type NextRequest, NextResponse } from "next/server";
-
-export const dynamic = "force-dynamic";
+import { NextResponse, type NextRequest } from "next/server";
 
 import { rateLimit, RateLimitError } from "@/lib/api/rate-limit";
 import { trackView } from "@/lib/api/tracking";
 import { getClientIp, getVisitorId } from "@/lib/api/utils";
-import { TrackQuerySchema, parseQueryParams } from "@/lib/api/validation";
+import { parseQueryParams, TrackQuerySchema } from "@/lib/api/validation";
+
+export const dynamic = "force-dynamic";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",

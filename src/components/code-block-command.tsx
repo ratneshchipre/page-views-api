@@ -2,10 +2,10 @@
 
 import * as React from "react";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { NpmCommands } from "@/types/unist";
 import type { PackageManager } from "@/hooks/use-package-manager";
 import { usePackageManager } from "@/hooks/use-package-manager";
-import type { NpmCommands } from "@/types/unist";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { CopyButton } from "./copy-button";
 import { getIconForPackageManager } from "./icons";

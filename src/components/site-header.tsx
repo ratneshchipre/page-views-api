@@ -3,12 +3,12 @@ import Link from "next/link";
 import { NAV_ITEMS } from "@/config/site";
 import { Separator } from "@/components/ui/separator";
 
-import ThemeToggle from "./theme-toggle";
-import SiteHeaderWrapper from "./site-header-wrapper";
-import DesktopNav from "./layout/desktop-nav";
-import NavItemGitHub from "./nav-item-github";
-import Logo from "./logo";
 import SectionCorners from "./landing/section-corners";
+import DesktopNav from "./layout/desktop-nav";
+import Logo from "./logo";
+import NavItemGitHub from "./nav-item-github";
+import SiteHeaderWrapper from "./site-header-wrapper";
+import ThemeToggle from "./theme-toggle";
 
 export default function SiteHeader() {
   return (

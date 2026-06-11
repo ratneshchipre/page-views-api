@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import SectionCorners from "@/components/landing/section-corners";
 import { SOURCE_CODE_GITHUB_URL } from "@/config/site";
+import SectionCorners from "@/components/landing/section-corners";
 
 import Logo from "./logo";
 

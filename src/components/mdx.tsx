@@ -1,11 +1,10 @@
+import Link from "next/link";
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import Link from "next/link";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 
-import { cn } from "@/lib/utils";
 import {
   rehypeCodeRawString,
   rehypeHighlightCode,
@@ -13,8 +12,10 @@ import {
 } from "@/lib/rehype-code-block";
 import { rehypeNpmCommand } from "@/lib/rehype-npm-command";
 import { remarkCodeImport } from "@/lib/remark-code-import";
+import { cn } from "@/lib/utils";
 
-import { Code, Heading } from "./ui/typography";
+import Callout from "./callout";
+import { mdxCodeBlockComponents } from "./mdx-code-block";
 import {
   Table,
   TableBody,
@@ -23,9 +24,8 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { mdxCodeBlockComponents } from "./mdx-code-block";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import Callout from "./callout";
+import { Code, Heading } from "./ui/typography";
 
 const components: MDXRemoteProps["components"] = {
   h1: (props: React.ComponentProps<"h1">) => (

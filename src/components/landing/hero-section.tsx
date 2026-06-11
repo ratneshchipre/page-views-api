@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
-import Logo from "@/components/logo";
 import { buttonVariants } from "@/components/ui/button";
+import Logo from "@/components/logo";
 
 import {
   SectionContent,
