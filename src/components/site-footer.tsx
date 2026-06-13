@@ -8,7 +8,7 @@ import Logo from "./logo";
 export default function SiteFooter() {
   return (
     <footer className="relative pb-2.5 after:absolute after:-inset-x-px after:bottom-0 after:h-2 after:bg-background">
-      <div className="relative flex flex-col items-center justify-between gap-5 border-y p-6 font-geist-sans md:flex-row">
+      <div className="relative flex flex-col items-center justify-between gap-5 border-y px-10 pt-10 pb-16 font-geist-sans md:flex-row">
         <SectionCorners />
         <Link href="/" className="flex items-center gap-2.5">
           <Logo className="h-7.5 w-7.5 rounded-md" svgClassName="h-4 w-4" />

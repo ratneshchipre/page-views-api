@@ -2,8 +2,10 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostUrl } from "@/data/docs";
 import { toIsoDate } from "@/utils/date";
+import { getTableOfContents } from "fumadocs-core/content/toc";
 
 import { Prose } from "@/components/ui/typography";
+import BottomNavToc from "@/components/bottom-nav-toc";
 import { LLMCopyButtonWithViewOptions } from "@/components/docs/page-actions";
 import PostShareMenu from "@/components/docs/post-share-menu";
 import { MDX } from "@/components/mdx";
@@ -73,6 +75,8 @@ export default async function DocsPage({
     notFound();
   }
 
+  const toc = getTableOfContents(post.content);
+
   return (
     <div className="flex flex-col pt-8">
       <Prose className="font-geist-sans">
@@ -107,6 +111,7 @@ export default async function DocsPage({
         <div className="-mt-5">
           <MDX code={post.content} />
         </div>
+        <BottomNavToc items={toc} />
       </Prose>
     </div>
   );
