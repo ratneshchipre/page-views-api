@@ -11,11 +11,11 @@ import {
 
 const metrics = [
   {
-    value: "25+",
+    value: "50+",
     label: "Websites Using",
   },
   {
-    value: "4.2K+",
+    value: "10K+",
     label: "Unique Visitors Tracked",
   },
 ];
